@@ -11,3 +11,5 @@
 - External diagnostic relay use requires existing session authorization covering the data and recipient. Feature Installer is excluded from this research.
 - Python on macOS handles network access; Docker handles compilers and reverse engineering. Keep dependency versions and hashes pinned. Tests must not require a live car.
 - Commit and push completed scoped work to main using existing GitHub authentication. Do not include unrelated changes. This repository is public: inspect staged changes before pushing.
+
+- Environment deployment is user-run: prepare the Ansible playbooks, perform static checks and isolated tests, then provide commands and expected results. Do not run setup/check playbooks, download dependencies, build images, install software or restart Docker/Colima on the user's behalf unless explicitly asked to execute them.

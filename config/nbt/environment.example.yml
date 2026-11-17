@@ -1,0 +1,8 @@
+---
+# Defaults; environment.local.yml overrides only the values you change.
+nbt_components: [dev, qnx, re]
+nbt_offline: false
+nbt_rebuild: false
+nbt_python: python3
+nbt_dev_image: nbt-evo-dev:2026-11-14
+nbt_qnx_image: nbt-evo-qnx-armv7:8.5-arm64-2026-11-14

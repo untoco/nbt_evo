@@ -18,7 +18,15 @@ flowchart TD
     R --> L
 ```
 
-Быстрая проверка из корня проекта:
+Развёртывание окружения на подготовленном Mac с Docker и Ansible:
+
+```sh
+./tools/nbt-env setup
+```
+
+Повторная проверка окружения: `./tools/nbt-env check`. Параметры и порядок работы описаны в [инструкции](docs/environment.md#развёртывание-через-ansible).
+
+Проверка кода из корня проекта:
 
 ```sh
 python3 -m unittest discover -s tools/tests -v

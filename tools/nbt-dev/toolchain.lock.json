@@ -1,0 +1,26 @@
+{
+  "repository": "https://github.com/luka-dev/qnx65-armv7-toolchain.git",
+  "commit": "baa45224f18ae6b13c2e9c77c6663bb8181eb6a1",
+  "files": [
+    {
+      "path": "Dockerfile",
+      "sha256": "fd9af017c7b0860aab3cc986111605dd8209cd4801cd1d266637269b1610593e"
+    },
+    {
+      "path": "gcc/build.sh",
+      "sha256": "8bac671216e6d98cbe96a613053253891c880f2bf08dc31bf3a6d923ccf53ceb"
+    },
+    {
+      "path": "binutils/build.sh",
+      "sha256": "8a625ca5994a070fd40685a1e18631b7afd67fb08ad032e63698fb3018ef06db"
+    },
+    {
+      "path": "sdp/target/qnx6/armle-v7/lib/libc.so.3",
+      "sha256": "3ea952170deb54ee7916ff8a6d35d0cd056af3b27c13f92f319f069562d40e00"
+    },
+    {
+      "path": "sdp/target/qnx6/armle-v7/lib/crt1.o",
+      "sha256": "e5e663aaa5512242b00124464a1964b46745d39038071e6e1d430882b5b0ca92"
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+---
+- name: Prepare NBT Evo development environment
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    ansible_python_interpreter: "{{ ansible_playbook_python }}"
+    repo_root: "{{ (playbook_dir ~ '/../..') | realpath }}"
+    bootstrap_dir: "{{ repo_root }}/.build/bootstrap"
+    qnx_root: "{{ repo_root }}/tools/qnx"
+    qnx_lock: "{{ lookup('ansible.builtin.file', repo_root ~ '/tools/nbt-dev/toolchain.lock.json') | from_json }}"
+  vars_files:
+    - ../../config/nbt/environment.example.yml
+  tasks:
+    - name: Validate prerequisites and load configuration
+      ansible.builtin.import_tasks: tasks/preflight.yml
+      tags: [always]
+
+    - name: Download dependencies and build images
+      ansible.builtin.include_tasks:
+        file: tasks/prepare.yml
+        apply:
+          tags: [setup]
+      tags: [setup]
+
+    - name: Verify prepared environment
+      ansible.builtin.include_tasks:
+        file: tasks/verify.yml
+        apply:
+          tags: [verify]
+      tags: [verify]

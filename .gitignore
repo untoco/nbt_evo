@@ -10,3 +10,4 @@ __pycache__/
 *.pcapng
 *.pem
 *.key
+/config/nbt/*.local.yml

@@ -1,0 +1,125 @@
+---
+- name: Inspect prepared image platforms
+  ansible.builtin.command:
+    argv: [docker, image, inspect, "{{ item.image }}"]
+  loop: "{{ selected_images }}"
+  loop_control:
+    label: "{{ item.component }}"
+  changed_when: false
+  register: prepared_images
+
+- name: Verify image architecture
+  ansible.builtin.assert:
+    that:
+      - (item.stdout | from_json)[0].Os == 'linux'
+      - (item.stdout | from_json)[0].Architecture == item.item.arch
+    fail_msg: "Wrong platform for {{ item.item.image }}"
+  loop: "{{ prepared_images.results }}"
+  loop_control:
+    label: "{{ item.item.component }}"
+
+- name: Verify project bind mount without modifying Docker settings
+  ansible.builtin.command:
+    argv:
+      - docker
+      - run
+      - --rm
+      - --pull
+      - never
+      - --network
+      - none
+      - --platform
+      - "linux/{{ selected_images[0].arch }}"
+      - --mount
+      - "type=bind,src={{ repo_root }},dst=/work,readonly"
+      - --entrypoint
+      - /bin/sh
+      - "{{ selected_images[0].image }}"
+      - -c
+      - test -f /work/tools/nbt_session.py
+  changed_when: false
+
+- name: Check general development tools
+  ansible.builtin.command:
+    argv: [tools/nbt-dev/run, doctor]
+    chdir: "{{ repo_root }}"
+  environment:
+    NBT_DEV_IMAGE: "{{ nbt_dev_image }}"
+  changed_when: false
+  when: "'dev' in nbt_components"
+
+- name: Compile and inspect C and C++98 QNX samples
+  ansible.builtin.command:
+    argv: [tools/nbt-dev/qnx-run, check]
+    chdir: "{{ repo_root }}"
+  environment:
+    NBT_QNX_IMAGE: "{{ nbt_qnx_image }}"
+    NBT_QNX_PLATFORM: linux/arm64
+  changed_when: false
+  when: "'qnx' in nbt_components"
+
+- name: Check Ghidra and REA
+  ansible.builtin.command:
+    argv: ["{{ nbt_python }}", tools/nbt_re.py, doctor]
+    chdir: "{{ repo_root }}"
+  register: re_doctor
+  changed_when: false
+  when: "'re' in nbt_components"
+
+- name: Require healthy Ghidra provider
+  ansible.builtin.assert:
+    that:
+      - (lookup('ansible.builtin.file', (re_doctor.stdout | from_json).report_dir ~ '/result.json') | from_json).healthy
+  when: "'re' in nbt_components"
+
+- name: Compile ARM32 QNX analysis fixture
+  ansible.builtin.command:
+    argv:
+      - tools/nbt-dev/qnx-run
+      - exec
+      - arm-unknown-nto-qnx6.5.0eabi-gcc
+      - -O0
+      - -g
+      - /work/tools/nbt-re/fixture.c
+      - -o
+      - /work/.build/nbt-re/inputs/fixture-qnx-arm32
+    chdir: "{{ repo_root }}"
+  environment:
+    NBT_QNX_IMAGE: "{{ nbt_qnx_image }}"
+    NBT_QNX_PLATFORM: linux/arm64
+  changed_when: false
+  when: "'qnx' in nbt_components and 're' in nbt_components"
+
+- name: Decompile fixture without vehicle access
+  ansible.builtin.command:
+    argv: ["{{ nbt_python }}", tools/nbt_re.py, decompile, .build/nbt-re/inputs/fixture-qnx-arm32, hu_scale_rpm]
+    chdir: "{{ repo_root }}"
+  register: re_decompile
+  changed_when: false
+  when: "'qnx' in nbt_components and 're' in nbt_components"
+
+- name: Validate decompiler output and immutable input
+  ansible.builtin.assert:
+    that:
+      - "'hu_scale_rpm' in (lookup('ansible.builtin.file', (re_decompile.stdout | from_json).report_dir ~ '/result.json') | from_json).normalized_result"
+      - (lookup('ansible.builtin.file', (re_decompile.stdout | from_json).report_dir ~ '/session.json') | from_json).input_unchanged
+  when: "'qnx' in nbt_components and 're' in nbt_components"
+
+- name: Generate MCP client configuration
+  ansible.builtin.command:
+    argv: ["{{ nbt_python }}", tools/nbt_re.py, mcp-config]
+    chdir: "{{ repo_root }}"
+  changed_when: false
+  when: "'re' in nbt_components"
+
+- name: Record successful verification
+  ansible.builtin.copy:
+    content: >-
+      {{ {'status': 'verified', 'utc': now(utc=true, fmt='%Y-%m-%dT%H:%M:%SZ'), 'components': nbt_components,
+      'images': prepared_images.results | map(attribute='stdout') | map('from_json') | list} | to_nice_json }}
+    dest: "{{ bootstrap_dir }}/result.json"
+    mode: '0600'
+
+- name: Report verification result
+  ansible.builtin.debug:
+    msg: "Environment verified. Result: {{ bootstrap_dir }}/result.json. No requests sent to the vehicle."

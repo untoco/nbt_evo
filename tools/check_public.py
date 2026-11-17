@@ -10,7 +10,7 @@ ALLOWED_VIN = b'WBA00000000000000'
 
 def issues(path, raw):
     result = []
-    if path.startswith(('research/', 'private/', '.build/', 'tools/qnx/', 'tools/qnx-deps/')) or '.local.json' in path:
+    if path.startswith(('research/', 'private/', '.build/', 'tools/qnx/', 'tools/qnx-deps/')) or path.endswith(('.local.json', '.local.yml')):
         result.append('private path')
     if b'\x00' in raw:
         result.append('binary input requires separate review')

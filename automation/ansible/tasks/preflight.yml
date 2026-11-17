@@ -1,0 +1,108 @@
+---
+- name: Clear previous success result
+  ansible.builtin.file:
+    path: "{{ bootstrap_dir }}/result.json"
+    state: absent
+
+- name: Create configuration directory
+  ansible.builtin.file:
+    path: "{{ repo_root }}/config/nbt"
+    state: directory
+    mode: '0755'
+
+- name: Initialize local configuration without overwriting it
+  ansible.builtin.copy:
+    src: "{{ repo_root }}/config/nbt/environment.example.yml"
+    dest: "{{ repo_root }}/config/nbt/environment.local.yml"
+    force: false
+    mode: '0600'
+
+- name: Load local settings
+  ansible.builtin.include_vars:
+    file: "{{ repo_root }}/config/nbt/environment.local.yml"
+
+- name: Validate selected components and switches
+  ansible.builtin.assert:
+    that:
+      - nbt_components is sequence and nbt_components is not string
+      - nbt_components | length > 0
+      - nbt_components | difference(['dev', 'qnx', 're']) | length == 0
+      - nbt_offline is boolean
+      - nbt_rebuild is boolean
+      - not (nbt_offline and nbt_rebuild)
+    fail_msg: Check environment.local.yml; offline mode cannot rebuild images.
+
+- name: Check host and Python prerequisites
+  ansible.builtin.command:
+    argv:
+      - "{{ nbt_python }}"
+      - -c
+      - >-
+        import platform,shutil,sys;
+        assert sys.version_info >= (3,11), 'Python 3.11+ required';
+        assert platform.system() == 'Darwin' and platform.machine() == 'arm64', 'This bootstrap targets Apple Silicon macOS';
+        assert all(shutil.which(x) for x in ['docker','git','curl']), 'Docker CLI, git and curl required'
+  changed_when: false
+
+- name: Check Docker daemon
+  ansible.builtin.command:
+    argv: [docker, info, --format, '{{ "{{.ServerVersion}}" }}']
+  changed_when: false
+
+- name: Create local workspace directories
+  ansible.builtin.file:
+    path: "{{ repo_root }}/{{ item }}"
+    state: directory
+    mode: '0700'
+  loop:
+    - .build/bootstrap
+    - .build/nbt-qnx/sources
+    - .build/nbt-qnx/generated
+    - .build/nbt-qnx/debs-arm64
+    - .build/nbt-qnx/metadata/apt-mirror
+    - .build/nbt-qnx/out
+    - .build/nbt-re/artifacts
+    - .build/nbt-re/inputs
+    - .build/nbt-re/reports
+    - tools/qnx-deps
+    - private
+    - research
+
+- name: Initialize RE settings without overwriting them
+  ansible.builtin.copy:
+    src: "{{ repo_root }}/config/nbt/re.example.json"
+    dest: "{{ repo_root }}/config/nbt/re.local.json"
+    force: false
+    mode: '0600'
+  when: "'re' in nbt_components"
+
+- name: Read RE settings
+  ansible.builtin.set_fact:
+    re_settings: "{{ lookup('ansible.builtin.file', repo_root ~ '/config/nbt/re.local.json') | from_json }}"
+  when: "'re' in nbt_components"
+
+- name: Build selected image inventory
+  ansible.builtin.set_fact:
+    selected_images: >-
+      {{ ([{'component': 'dev', 'image': nbt_dev_image, 'arch': 'amd64'}] if 'dev' in nbt_components else [])
+      + ([{'component': 'qnx', 'image': nbt_qnx_image, 'arch': 'arm64'}] if 'qnx' in nbt_components else [])
+      + ([{'component': 're', 'image': re_settings.image, 'arch': 'arm64'}] if 're' in nbt_components else []) }}
+
+- name: Inspect existing images
+  ansible.builtin.command:
+    argv: [docker, image, inspect, "{{ item.image }}"]
+  loop: "{{ selected_images }}"
+  loop_control:
+    label: "{{ item.component }}"
+  register: initial_images
+  failed_when: false
+  changed_when: false
+
+- name: Require preloaded images in offline mode
+  ansible.builtin.assert:
+    that: item.rc == 0
+    fail_msg: "Missing {{ item.item.image }}; run setup online first or docker load the image."
+  loop: "{{ initial_images.results }}"
+  loop_control:
+    label: "{{ item.item.component }}"
+  when: nbt_offline
