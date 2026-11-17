@@ -7,8 +7,11 @@ DEFAULTS = {'download_timeout_seconds': 14400, 'download_attempts': 5, 'download
 
 
 def digest(path, algorithm='sha256'):
-    with Path(path).open('rb') as stream:
-        return hashlib.file_digest(stream, algorithm).hexdigest()
+    try:
+        with Path(path).open('rb') as stream:
+            return hashlib.file_digest(stream, algorithm).hexdigest()
+    except OSError as error:
+        raise OSError(error.errno, f'Cannot hash file: {error.strerror}', str(path)) from error
 
 
 def download(url, destination, expected=None, algorithm='sha256', size=None, settings=None, progress=True):

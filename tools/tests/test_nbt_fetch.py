@@ -14,6 +14,79 @@ from nbt_download import digest
 
 
 class DownloadBoundary(unittest.TestCase):
+    def test_debian_cache_does_not_read_unneeded_aliases(self):
+        helper = FETCH.load_helper('deps_cache_test', 'tools/nbt-dev/qnx-deps.py')
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            cache, downloads = root / 'cache', root / 'downloads'
+            cache.mkdir()
+            downloads.mkdir()
+            (cache / 'fixture.deb').write_bytes(b'package')
+            (downloads / 'fixture 2.deb').write_bytes(b'offloaded duplicate')
+            package = {'filename': 'fixture.deb', 'size': 7, 'sha256': digest(cache / 'fixture.deb')}
+            def guarded_hash(path):
+                self.assertEqual(path.parent, cache)
+                return digest(path)
+            with patch.object(helper, 'CACHE', cache), patch.object(helper, 'DOWNLOADS', downloads), \
+                 patch.object(helper, 'sha256', side_effect=guarded_hash):
+                self.assertEqual(helper.normalize([package]), [])
+
+    def test_debian_exact_name_avoids_offloaded_duplicate(self):
+        helper = FETCH.load_helper('deps_exact_test', 'tools/nbt-dev/qnx-deps.py')
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            downloads = root / 'downloads'
+            downloads.mkdir()
+            exact = downloads / 'fixture.deb'
+            exact.write_bytes(b'package')
+            (downloads / 'fixture 2.deb').write_bytes(b'package')
+            package = {'filename': exact.name, 'size': 7, 'sha256': digest(exact)}
+            def guarded_hash(path):
+                self.assertNotIn(' 2.deb', path.name)
+                return digest(path)
+            with patch.object(helper, 'CACHE', root / 'cache'), patch.object(helper, 'DOWNLOADS', downloads), \
+                 patch.object(helper, 'sha256', side_effect=guarded_hash):
+                self.assertEqual(helper.normalize([package]), [])
+            self.assertEqual((root / 'cache/fixture.deb').read_bytes(), b'package')
+
+    def test_debian_alias_scan_skips_nonresident_candidates(self):
+        helper = FETCH.load_helper('deps_alias_test', 'tools/nbt-dev/qnx-deps.py')
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            downloads = root / 'downloads'
+            downloads.mkdir()
+            alias = downloads / 'browser-download.deb'
+            alias.write_bytes(b'package')
+            placeholder = downloads / 'fixture 2.deb'
+            placeholder.write_bytes(b'package')
+            package = {'filename': 'fixture.deb', 'size': 7, 'sha256': digest(alias)}
+            def guarded_hash(path):
+                self.assertNotEqual(path, placeholder)
+                return digest(path)
+            original = helper.resident
+            with patch.object(helper, 'CACHE', root / 'cache'), patch.object(helper, 'DOWNLOADS', downloads), \
+                 patch.object(helper, 'resident', side_effect=lambda p: p != placeholder and original(p)), \
+                 patch.object(helper, 'sha256', side_effect=guarded_hash):
+                self.assertEqual(helper.normalize([package]), [])
+            self.assertEqual((root / 'cache/fixture.deb').read_bytes(), b'package')
+
+    def test_dataless_flag_is_detected_without_opening_file(self):
+        from unittest.mock import Mock
+        helper = FETCH.load_helper('deps_flags_test', 'tools/nbt-dev/qnx-deps.py')
+        candidate = Mock()
+        candidate.is_file.return_value = True
+        candidate.stat.return_value.st_flags = 0x40000000
+        self.assertFalse(helper.resident(candidate))
+        candidate.open.assert_not_called()
+        candidate.stat.return_value.st_flags = 64
+        self.assertTrue(helper.resident(candidate))
+
+    def test_hash_timeout_reports_the_file(self):
+        from nbt_download import digest as file_digest
+        with patch.object(Path, 'open', side_effect=OSError(60, 'Operation timed out')):
+            with self.assertRaisesRegex(OSError, 'fixture.deb'):
+                file_digest(Path('fixture.deb'))
+
     def test_wheel_lock_matches_hashed_requirements(self):
         lock = FETCH.read_json(FETCH.ROOT / 'tools/nbt-dev/python-wheels.lock.json')
         requirements = (FETCH.ROOT / 'tools/nbt-dev/python-requirements.txt').read_text()

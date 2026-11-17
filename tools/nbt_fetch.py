@@ -64,7 +64,8 @@ def fingerprints():
              'tools/nbt-dev/Dockerfile', 'tools/nbt-dev/apt-packages.txt',
              'tools/nbt-dev/python-requirements.txt', 'tools/nbt-dev/python-wheels.lock.json',
              'tools/nbt-dev/toolchain.lock.json',
-             'tools/nbt-dev/dependencies-arm64.json', 'tools/nbt-dev/prepare-qnx-build.py',
+             'tools/nbt-dev/dependencies-arm64.json', 'tools/nbt-dev/qnx-deps.py',
+             'tools/nbt-dev/prepare-qnx-build.py',
              'tools/nbt-dev/prepare-qnx-metadata.py', 'tools/nbt-re/Dockerfile',
              'tools/nbt-re/apt-packages.txt', 'tools/nbt-re/artifacts.lock.json']
     return {p: digest(ROOT / p) for p in paths}
@@ -141,8 +142,10 @@ def qnx_compiler_inputs(tree):
 
 
 def fetch_qnx(settings):
+    print("QNX: verifying pinned source files", flush=True)
     tree = fetch_qnx_tree()
     deps = load_helper('qnx_deps', 'tools/nbt-dev/qnx-deps.py')
+    print("QNX: verifying cached Debian packages", flush=True)
     packages = read_json(deps.MANIFEST)['packages']
     # Normalize prior manual/browser downloads before requesting missing packages.
     for index, item in enumerate(deps.normalize(packages), 1):

@@ -6,6 +6,7 @@ import hashlib
 import json
 from pathlib import Path
 import shutil
+import stat
 import tempfile
 import urllib.request
 
@@ -16,34 +17,63 @@ MANIFEST = Path(__file__).with_name("dependencies-arm64.json")
 
 
 def sha256(path):
-    with path.open("rb") as stream:
-        return hashlib.file_digest(stream, "sha256").hexdigest()
+    try:
+        with path.open("rb") as stream:
+            return hashlib.file_digest(stream, "sha256").hexdigest()
+    except OSError as error:
+        raise OSError(error.errno, f"Cannot hash Debian package: {error.strerror}", str(path)) from error
+
+
+def resident(path):
+    """Do not trigger restoration of macOS dataless placeholders."""
+    return path.is_file() and not (getattr(path.stat(), "st_flags", 0)
+                                  & getattr(stat, "SF_DATALESS", 0x40000000))
 
 
 def valid(path, package):
-    return (path.is_file() and path.stat().st_size == package["size"]
+    return (resident(path) and path.stat().st_size == package["size"]
             and sha256(path) == package["sha256"])
 
 
 def normalize(packages):
-    """Accept browser filenames and copy verified files to apt's cache names."""
+    """Prefer verified cache/exact names; inspect resident aliases only if needed."""
     DOWNLOADS.mkdir(parents=True, exist_ok=True)
     CACHE.mkdir(parents=True, exist_ok=True)
-    known = {sha256(path): path for path in DOWNLOADS.rglob("*.deb") if path.is_file()}
     missing = []
     for package in packages:
         target = CACHE / package["filename"]
         if valid(target, package):
             continue
+        source = DOWNLOADS / package["filename"]
+        if valid(source, package):
+            shutil.copyfile(source, target)
+            if not valid(target, package):
+                raise ValueError(f"Copied package failed verification: {target.name}")
+        else:
+            missing.append(package)
+    if not missing:
+        return []
+    # Browser-renamed files remain supported, without reading offloaded duplicates
+    # or unrelated packages when all required inputs were already found.
+    required_sizes = {item["size"] for item in missing}
+    known = {}
+    for path in DOWNLOADS.rglob("*.deb"):
+        if not resident(path):
+            print(f"Skipping nonresident Debian candidate: {path.name}", flush=True)
+            continue
+        if path.stat().st_size in required_sizes:
+            known[sha256(path)] = path
+    unresolved = []
+    for package in missing:
+        target = CACHE / package["filename"]
         source = known.get(package["sha256"])
         if source is None or source.stat().st_size != package["size"]:
-            missing.append(package)
+            unresolved.append(package)
             continue
         shutil.copyfile(source, target)
         if not valid(target, package):
-            target.unlink(missing_ok=True)
             raise ValueError(f"Copied package failed verification: {target.name}")
-    return missing
+    return unresolved
 
 
 def download(package):
