@@ -3,6 +3,7 @@ from pathlib import Path
 import shutil
 import stat
 import subprocess
+import tempfile
 
 INPUT_ROOTS = ('Dockerfile', 'sdp', 'gcc', 'binutils', 'tools', 'cross', 'entrypoint.sh')
 
@@ -32,15 +33,32 @@ def compiler_inputs(tree):
 def prepare_context(tree, destination):
     tree, destination = Path(tree), Path(destination)
     paths = compiler_inputs(tree)
-    # This directory contains generated copies only, never original source files.
-    if destination.exists():
-        shutil.rmtree(destination)
-    destination.mkdir(parents=True)
-    for source in paths:
-        target = destination / source.relative_to(tree)
-        target.parent.mkdir(parents=True, exist_ok=True)
-        if source.is_symlink():
-            target.symlink_to(source.readlink())
-        else:
-            shutil.copy2(source, target)
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    staging = Path(tempfile.mkdtemp(prefix=destination.name + '.staging-', dir=destination.parent))
+    previous = staging.with_name(staging.name.replace('.staging-', '.previous-', 1))
+    moved_previous = False
+    try:
+        for source in paths:
+            target = staging / source.relative_to(tree)
+            target.parent.mkdir(parents=True, exist_ok=True)
+            if source.is_symlink():
+                target.symlink_to(source.readlink())
+            else:
+                shutil.copy2(source, target)
+        # Recursive removal can race with files created by desktop services.
+        # Preserve the old tree; publishing must not depend on deleting it.
+        if destination.exists() or destination.is_symlink():
+            destination.rename(previous)
+            moved_previous = True
+        try:
+            staging.rename(destination)
+        except OSError:
+            if moved_previous:
+                previous.rename(destination)
+            raise
+    except Exception:
+        print('Unpublished QNX context retained: ' + str(staging), flush=True)
+        raise
+    if moved_previous:
+        print('Previous QNX context retained: ' + str(previous), flush=True)
     return destination

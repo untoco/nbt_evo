@@ -102,12 +102,55 @@ assert not any(Path(p).name == 'nbt-dev' for p in sys.path)
             def guarded_copy(source, target):
                 self.assertNotEqual(source, duplicate)
                 return real_copy(source, target)
-            with patch.object(helper.shutil, 'copy2', side_effect=guarded_copy):
+            with patch.object(helper.shutil, 'copy2', side_effect=guarded_copy), \
+                 patch.object(helper.shutil, 'rmtree', side_effect=AssertionError('must not delete old context')):
                 helper.prepare_context(tree, destination)
             self.assertEqual((destination / 'sdp/etc/named.conf').read_bytes(), b'required')
             self.assertFalse((destination / 'sdp/etc/named 2.conf').exists())
             self.assertFalse((destination / 'stale').exists())
             self.assertTrue(duplicate.exists())
+            previous = list(root.glob('context.previous-*'))
+            self.assertEqual(len(previous), 1)
+            self.assertEqual((previous[0] / 'stale').read_text(), 'previous context')
+
+    def test_qnx_context_copy_failure_preserves_previous(self):
+        helper = FETCH.load_helper('qnx_copy_failure', 'tools/nbt-dev/qnx_inputs.py')
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / 'Dockerfile'
+            source.write_text('new')
+            destination = root / 'context'
+            destination.mkdir()
+            (destination / '.DS_Store').write_bytes(b'old')
+            with patch.object(helper, 'compiler_inputs', return_value=[source]), \
+                 patch.object(helper.shutil, 'copy2', side_effect=OSError('copy failed')):
+                with self.assertRaisesRegex(OSError, 'copy failed'):
+                    helper.prepare_context(root, destination)
+            self.assertEqual((destination / '.DS_Store').read_bytes(), b'old')
+            self.assertEqual(len(list(root.glob('context.staging-*'))), 1)
+
+    def test_qnx_context_publish_failure_restores_previous(self):
+        helper = FETCH.load_helper('qnx_publish_failure', 'tools/nbt-dev/qnx_inputs.py')
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / 'Dockerfile'
+            source.write_text('new')
+            destination = root / 'context'
+            destination.mkdir()
+            (destination / '.DS_Store').write_bytes(b'old')
+            rename = Path.rename
+            def fail_publish(path, target):
+                if '.staging-' in path.name:
+                    raise OSError('publish failed')
+                return rename(path, target)
+            with patch.object(helper, 'compiler_inputs', return_value=[source]), \
+                 patch.object(Path, 'rename', fail_publish):
+                with self.assertRaisesRegex(OSError, 'publish failed'):
+                    helper.prepare_context(root, destination)
+            self.assertEqual((destination / '.DS_Store').read_bytes(), b'old')
+            self.assertFalse(list(root.glob('context.previous-*')))
+            staging = list(root.glob('context.staging-*'))
+            self.assertEqual((staging[0] / 'Dockerfile').read_text(), 'new')
 
     def test_debian_cache_does_not_read_unneeded_aliases(self):
         helper = FETCH.load_helper('deps_cache_test', 'tools/nbt-dev/qnx-deps.py')
