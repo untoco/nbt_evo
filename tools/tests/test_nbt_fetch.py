@@ -343,6 +343,33 @@ assert not any(Path(p).name == 'nbt-dev' for p in sys.path)
                 with self.assertRaisesRegex(ValueError, 'Missing/changed dependency'):
                     FETCH.validate_files(files)
 
+    def test_desktop_metadata_is_never_hashed_or_required(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            (root / 'npm/_cacache').mkdir(parents=True)
+            package = root / 'npm/_cacache/content'
+            package.write_bytes(b'package')
+            metadata = [root / '.DS_Store', root / 'npm/.DS_Store', root / 'npm/._content']
+            for path in metadata:
+                path.write_bytes(b'Finder metadata')
+            def guarded_digest(path):
+                self.assertNotIn(path, metadata)
+                return digest(path)
+            with patch.object(FETCH, 'ROOT', root), patch.object(FETCH, 'digest', side_effect=guarded_digest):
+                inventory = FETCH.snapshot([root])
+                self.assertEqual(inventory, {'npm/_cacache/content': digest(package)})
+                # A legacy receipt must tolerate both changed and removed metadata.
+                legacy = dict(inventory, **{str(p.relative_to(root)): 'old hash' for p in metadata})
+                metadata[0].unlink()
+                FETCH.validate_files(legacy)
+                package.write_bytes(b'changed')
+                with self.assertRaisesRegex(ValueError, 'Missing/changed dependency'):
+                    FETCH.validate_files(legacy)
+
+    def test_metadata_only_inventory_is_not_ready(self):
+        with self.assertRaisesRegex(ValueError, 'Empty dependency inventory'):
+            FETCH.validate_files({'.DS_Store': 'hash', 'npm/._content': 'hash'})
+
     def test_receipt_cannot_reference_files_outside_workspace(self):
         with tempfile.TemporaryDirectory() as d:
             root = Path(d)

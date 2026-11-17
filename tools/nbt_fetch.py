@@ -71,17 +71,25 @@ def fingerprints():
     return {p: digest(ROOT / p) for p in paths}
 
 
+def desktop_metadata(path):
+    return any(part == '.DS_Store' or part.startswith('._') for part in Path(path).parts)
+
+
 def snapshot(paths):
     files = {}
     for path in paths:
         candidates = [path] if path.is_file() else path.rglob('*')
         for p in candidates:
+            if desktop_metadata(p.relative_to(ROOT)):
+                continue
             if p.is_file() and not p.is_symlink() and '.git' not in p.relative_to(ROOT).parts:
                 files[str(p.relative_to(ROOT))] = digest(p)
     return files
 
 
 def validate_files(files):
+    # Older inventories may contain Finder metadata; it is never a build input.
+    files = {p: expected for p, expected in files.items() if not desktop_metadata(p)}
     if not files:
         raise ValueError('Empty dependency inventory; run tools/nbt-env fetch')
     for relative, expected in files.items():
