@@ -1,0 +1,77 @@
+{
+  "date": "2026-11-16",
+  "status": "measured",
+  "scope": "current Mac/ENET/HU Wi-Fi/iPhone USB topology; no successful SSH",
+  "mac_interfaces": {
+    "en5": {
+      "role": "ENET",
+      "ip": "169.254.245.198",
+      "prefix": 16
+    },
+    "en0": {
+      "role": "HU Wi-Fi",
+      "ip": "172.16.224.117",
+      "prefix": 24
+    },
+    "en6": {
+      "role": "iPhone USB",
+      "ip": "172.20.10.4",
+      "prefix": 28
+    }
+  },
+  "endpoints": {
+    "enet_gateway": {
+      "ip": "169.254.97.91",
+      "tcp_6801": "reachable",
+      "vin_matches": true
+    },
+    "hu_wifi": {
+      "ip": "172.16.224.1",
+      "arp_mac": "02:00:00:00:00:01",
+      "dhcp_server": true,
+      "dhcp_router_advertised": "0.0.0.0",
+      "icmp": {
+        "sent": 2,
+        "received": 2,
+        "latency_ms": [
+          13.974,
+          11.42
+        ]
+      },
+      "tcp_22_23_8000": "timed out after current Enable SSH"
+    },
+    "hu_diagnostic_reported_enet_ip": {
+      "ip": "169.254.199.99",
+      "prefix": 16,
+      "source": "HU ReadDataByIdentifier 0x172A; not an observed ARP peer",
+      "arp": "incomplete in earlier tests",
+      "tcp_22": "timed out after current Enable SSH"
+    },
+    "iphone_usb_gateway": {
+      "ip": "172.20.10.1"
+    }
+  },
+  "default_route": "ipsec0 (pre-existing VPN)",
+  "iphone_scoped_default": "via 172.20.10.1 on en6",
+  "mac_service_order_before": [
+    "Belkin USB-C LAN",
+    "Thunderbolt Bridge",
+    "Wi-Fi",
+    "iPhone USB"
+  ],
+  "mac_service_order_after": [
+    "iPhone USB",
+    "Belkin USB-C LAN",
+    "Thunderbolt Bridge",
+    "Wi-Fi"
+  ],
+  "network_change": "Moved iPhone USB to first priority, saved original order locally; owner confirmed Internet works with BMW Wi-Fi connected. VPN not disabled.",
+  "owner_reported_hu_restart": true,
+  "ssh_client_after_restart": "Gate open, SSH enabled, unknown server tag 0x84",
+  "phone_wifi_off_test": "Mac remained on HU Wi-Fi and USB; SSH 22 still timed out",
+  "passwords": "Not included; user screenshot with Wi-Fi credentials not copied to repository.",
+  "public_export": {
+    "anonymized": true,
+    "note": "Derived copy; original retained locally. VIN, MAC and personal paths replaced. Raw captures are excluded."
+  }
+}

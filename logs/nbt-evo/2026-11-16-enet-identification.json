@@ -1,0 +1,270 @@
+{
+  "date": "2026-11-16",
+  "timezone": "Europe/Moscow",
+  "status": "measured",
+  "gateway": "169.254.97.91",
+  "firmware_menu": {
+    "status": "reported",
+    "owner_entered": "X20511I",
+    "normalized": "NBTevo_X20511I",
+    "note": "NBTevo_ prefix added for notation; not read from HU filesystem"
+  },
+  "raw_identifiers": [
+    {
+      "ecu": "ZGW",
+      "address": 16,
+      "did": 4107,
+      "result": "ok",
+      "value": "46 30 32 30 0d 07 01 fa 46 30 32 30 0d 07 01 fa 46 30 32 30 0d 07 01 fa 00 14 9f 7e 7a c1 7c d6 32 b0 30 f6 de cd 15 04 5c 21 75 b3 95 bc"
+    },
+    {
+      "ecu": "HU",
+      "address": 99,
+      "did": 61831,
+      "result": "negative",
+      "value": "negative response 0x31"
+    },
+    {
+      "ecu": "HU",
+      "address": 99,
+      "did": 61833,
+      "result": "negative",
+      "value": "negative response 0x31"
+    },
+    {
+      "ecu": "HU",
+      "address": 99,
+      "did": 61697,
+      "result": "ok",
+      "value": "01 01 00 13 22 02 04 8f 04 d2 01 00 00 10 00 00 00 06 00 00 1f fd 07 1e 01 08 00 00 27 18 07 1e 01 08 00 00 27 19 07 1e 01 08 00 00 27 20 07 1e 01 08 00 00 27 1c 07 1e 01 08 00 00 27 27 07 1e 01 08 00 00 27 23 07 1e 01 08 00 00 27 22 07 1e 01 08 00 00 27 1f 07 1e 01 08 00 00 27 1a 07 1e 01 08 00 00 27 1e 07 1e 01 0c 00 00 27 0c 07 1e 01 0c 00 00 27 0d 07 1e 01 0c 00 00 27 10 07 1e 01 0c 00 00 27 0b 07 1e 01 a0 00 00 25 d9 03 13 01 a1 00 00 24 a8 ff 07 1e 01 00 00 2f c3 01 04 01 05 00 00 1e f6 06 34 07"
+    },
+    {
+      "ecu": "KOMBI",
+      "address": 96,
+      "did": 61831,
+      "result": "negative",
+      "value": "negative response 0x31"
+    },
+    {
+      "ecu": "KOMBI",
+      "address": 96,
+      "did": 61833,
+      "result": "negative",
+      "value": "negative response 0x31"
+    },
+    {
+      "ecu": "KOMBI",
+      "address": 96,
+      "did": 61697,
+      "result": "ok",
+      "value": "01 01 00 0c 14 06 13 8a 82 90 01 00 00 01 23 00 00 01 00 00 10 f7 02 01 71 01 00 00 09 c6 02 01 0a 02 00 00 10 f8 ff ff ff 02 00 00 01 40 ff ff ff 06 00 00 11 07 02 06 72 07 00 00 11 0a 02 06 31 08 00 00 11 10 02 5f 69 08 00 00 11 16 02 5f 69 08 00 00 11 13 02 5f 69 08 00 00 11 0d 02 5f 64 08 00 00 11 19 02 5f 64 05 00 00 09 c8 06 00 1f"
+    }
+  ],
+  "svk": {
+    "HU": {
+      "entry_count": 19,
+      "header_hex": "01 01 00 13 22 02 04 8f 04 d2 01 00 00 10 00 00 00",
+      "entries": [
+        {
+          "class": "BTLD",
+          "class_raw": 6,
+          "id": "00001ffd",
+          "version": "007.030.001"
+        },
+        {
+          "class": "SWFL",
+          "class_raw": 8,
+          "id": "00002718",
+          "version": "007.030.001"
+        },
+        {
+          "class": "SWFL",
+          "class_raw": 8,
+          "id": "00002719",
+          "version": "007.030.001"
+        },
+        {
+          "class": "SWFL",
+          "class_raw": 8,
+          "id": "00002720",
+          "version": "007.030.001"
+        },
+        {
+          "class": "SWFL",
+          "class_raw": 8,
+          "id": "0000271c",
+          "version": "007.030.001"
+        },
+        {
+          "class": "SWFL",
+          "class_raw": 8,
+          "id": "00002727",
+          "version": "007.030.001"
+        },
+        {
+          "class": "SWFL",
+          "class_raw": 8,
+          "id": "00002723",
+          "version": "007.030.001"
+        },
+        {
+          "class": "SWFL",
+          "class_raw": 8,
+          "id": "00002722",
+          "version": "007.030.001"
+        },
+        {
+          "class": "SWFL",
+          "class_raw": 8,
+          "id": "0000271f",
+          "version": "007.030.001"
+        },
+        {
+          "class": "SWFL",
+          "class_raw": 8,
+          "id": "0000271a",
+          "version": "007.030.001"
+        },
+        {
+          "class": "SWFL",
+          "class_raw": 8,
+          "id": "0000271e",
+          "version": "007.030.001"
+        },
+        {
+          "class": "IBAD",
+          "class_raw": 12,
+          "id": "0000270c",
+          "version": "007.030.001"
+        },
+        {
+          "class": "IBAD",
+          "class_raw": 12,
+          "id": "0000270d",
+          "version": "007.030.001"
+        },
+        {
+          "class": "IBAD",
+          "class_raw": 12,
+          "id": "00002710",
+          "version": "007.030.001"
+        },
+        {
+          "class": "IBAD",
+          "class_raw": 12,
+          "id": "0000270b",
+          "version": "007.030.001"
+        },
+        {
+          "class": "ENTD",
+          "class_raw": 160,
+          "id": "000025d9",
+          "version": "003.019.001"
+        },
+        {
+          "class": "NAVD",
+          "class_raw": 161,
+          "id": "000024a8",
+          "version": "255.007.030"
+        },
+        {
+          "class": "HWEL",
+          "class_raw": 1,
+          "id": "00002fc3",
+          "version": "001.004.001"
+        },
+        {
+          "class": "CAFD",
+          "class_raw": 5,
+          "id": "00001ef6",
+          "version": "006.052.007"
+        }
+      ],
+      "note": "Only entry records decoded; header dates/padding not interpreted."
+    },
+    "KOMBI": {
+      "entry_count": 12,
+      "header_hex": "01 01 00 0c 14 06 13 8a 82 90 01 00 00 01 23 00 00",
+      "entries": [
+        {
+          "class": "HWEL",
+          "class_raw": 1,
+          "id": "000010f7",
+          "version": "002.001.113"
+        },
+        {
+          "class": "HWEL",
+          "class_raw": 1,
+          "id": "000009c6",
+          "version": "002.001.010"
+        },
+        {
+          "class": "HWAP",
+          "class_raw": 2,
+          "id": "000010f8",
+          "version": "255.255.255"
+        },
+        {
+          "class": "HWAP",
+          "class_raw": 2,
+          "id": "00000140",
+          "version": "255.255.255"
+        },
+        {
+          "class": "BTLD",
+          "class_raw": 6,
+          "id": "00001107",
+          "version": "002.006.114"
+        },
+        {
+          "class": "FLSL",
+          "class_raw": 7,
+          "id": "0000110a",
+          "version": "002.006.049"
+        },
+        {
+          "class": "SWFL",
+          "class_raw": 8,
+          "id": "00001110",
+          "version": "002.095.105"
+        },
+        {
+          "class": "SWFL",
+          "class_raw": 8,
+          "id": "00001116",
+          "version": "002.095.105"
+        },
+        {
+          "class": "SWFL",
+          "class_raw": 8,
+          "id": "00001113",
+          "version": "002.095.105"
+        },
+        {
+          "class": "SWFL",
+          "class_raw": 8,
+          "id": "0000110d",
+          "version": "002.095.100"
+        },
+        {
+          "class": "SWFL",
+          "class_raw": 8,
+          "id": "00001119",
+          "version": "002.095.100"
+        },
+        {
+          "class": "CAFD",
+          "class_raw": 5,
+          "id": "000009c8",
+          "version": "006.000.031"
+        }
+      ],
+      "note": "Only entry records decoded; header dates/padding not interpreted."
+    }
+  },
+  "decoding_source": "https://github.com/secdev/scapy/blob/master/scapy/contrib/automotive/bmw/definitions.py#L253-L335",
+  "public_export": {
+    "anonymized": true,
+    "note": "Derived copy; original retained locally. VIN, MAC and personal paths replaced. Raw captures are excluded."
+  }
+}

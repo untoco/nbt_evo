@@ -1,0 +1,31 @@
+{
+  "date": "2026-11-16",
+  "scope": "HU IP DID 0x172A, 15-second deadline",
+  "frames": [
+    {
+      "kind": "0x2",
+      "body": "f4 63 22 17 2a"
+    },
+    {
+      "kind": "0x1",
+      "body": "63 f4 7f 22 78"
+    },
+    {
+      "kind": "0x1",
+      "body": "63 f4 62 17 2a 00 a9 fe c7 63 ff ff 00 00 00 00 00 00"
+    }
+  ],
+  "tcp_connect": "ok",
+  "decoded": {
+    "format": 0,
+    "ip": "169.254.199.99",
+    "mask": "255.255.0.0",
+    "gateway": "0.0.0.0"
+  },
+  "status": "measured",
+  "note": "3-second attempts timed out after responsePending; 15-second attempt returned positive response. Exact elapsed time not measured.",
+  "public_export": {
+    "anonymized": true,
+    "note": "Derived copy; original retained locally. VIN, MAC and personal paths replaced. Raw captures are excluded."
+  }
+}

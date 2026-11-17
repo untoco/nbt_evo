@@ -1,0 +1,36 @@
+#!/bin/bash
+set -euo pipefail
+
+script_dir="$(cd "$(dirname "$0")" && pwd)"
+repo_dir="$(cd "$script_dir/../.." && pwd)"
+image="${NBT_DEV_IMAGE:-nbt-evo-dev:2026-11-14}"
+command="${1:-shell}"
+if [ "$#" -gt 0 ]; then shift; fi
+
+if [ "$command" = build ]; then
+    exec docker build --platform linux/amd64 -t "$image" "$script_dir"
+fi
+
+mounts=(--mount "type=bind,src=$repo_dir,dst=/work")
+add_mount() {
+    local source="$1" destination="$2"
+    if [ ! -d "$source" ] || [[ "$source" != /* ]]; then
+        printf 'Expected an existing absolute directory: %s\n' "$source" >&2
+        exit 2
+    fi
+    mounts+=(--mount "type=bind,src=$source,dst=$destination,readonly")
+}
+if [ -n "${NBT_QNX_SDK:-}" ]; then add_mount "$NBT_QNX_SDK" /opt/qnx650; fi
+if [ -n "${NBT_QNX_LICENSE:-}" ]; then add_mount "$NBT_QNX_LICENSE" /qnx-license; fi
+if [ -n "${NBT_FRAMEWORKS:-}" ]; then add_mount "$NBT_FRAMEWORKS" /frameworks; fi
+if [ -n "${NBT_RUNTIME:-}" ]; then add_mount "$NBT_RUNTIME" /runtime; fi
+
+options=(--rm --platform linux/amd64 --network "${NBT_DEV_NETWORK:-none}" "${mounts[@]}"
+    --env NBTEVO_FRAMEWORKS_DIR=/frameworks --env NBTEVO_RUNTIME_DIR=/runtime)
+if [ -t 0 ] && [ -t 1 ]; then options+=(-it); fi
+case "$command" in
+    shell) exec docker run "${options[@]}" "$image" bash "$@" ;;
+    doctor) exec docker run "${options[@]}" "$image" nbt-doctor "$@" ;;
+    exec) exec docker run "${options[@]}" "$image" "$@" ;;
+    *) printf 'Usage: %s {build|doctor|shell|exec COMMAND...}\n' "$0" >&2; exit 2 ;;
+esac

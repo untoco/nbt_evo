@@ -1,0 +1,140 @@
+{
+  "date": "2026-11-17",
+  "status": "measured",
+  "scope": "local static analysis, no vehicle connection",
+  "versions": {
+    "ghidra": "12.2",
+    "rea": "6.9.0",
+    "node": "24.22.3",
+    "jdk": "25.0.5+8"
+  },
+  "image": "clubsport-nbt-re:ghidra12.2-rea6.9.0",
+  "image_id": "sha256:753743e07544e535e625ad8bdf15ea29d5b29d4e29b953946f72e448afa6909f",
+  "platform": "linux/arm64",
+  "base_image": "eclipse-temurin:25-jdk-noble@sha256:80f67fb3d6f76e2d817d98a4cc2a9cf05f054d4e6adc5e2144bde671d722e63f",
+  "artifacts": {
+    "ghidra": {
+      "version": "12.2",
+      "url": "https://github.com/NationalSecurityAgency/ghidra/releases/download/Ghidra_12.2_build/ghidra_12.2_PUBLIC_20261016.zip",
+      "file": "ghidra_12.2_PUBLIC_20261016.zip",
+      "sha256": "2c2cd776db3c1f6a097ba418922378ac3649cadd5e844a6f5f088ae628a7be67"
+    },
+    "node": {
+      "version": "v24.22.3",
+      "url": "https://nodejs.org/dist/v24.22.3/node-v24.22.3-linux-arm64.tar.xz",
+      "file": "node-v24.22.3-linux-arm64.tar.xz",
+      "sha256": "6e51a2ada00f0011cc266f65d98922b403d7ad88f809ca2aa615a5fe1ce6e86c"
+    },
+    "rea": {
+      "version": "6.9.0",
+      "url": "https://registry.npmjs.org/rea-agents/-/rea-agents-6.9.0.tgz",
+      "file": "rea-agents-6.9.0.tgz",
+      "sha512": "2aa0e7d5447904ca87a10dcc1809cfb968922b081d15acf52ffb94360acab7ed56f243ed8183fc01610e5c817594320e055c8fb98208b2dda26a6a3559fdebf2"
+    }
+  },
+  "native_decompiler": "Ghidra ghidra_opt compiled from bundled source for linux_arm_64; make ARCH_TYPE=",
+  "doctor": {
+    "selected_provider_healthy": true,
+    "all_optional_environment_healthy": false,
+    "scope_checks": [
+      {
+        "name": "node",
+        "ok": true,
+        "classification": "healthy",
+        "detail": "24.22.3",
+        "details": {
+          "runtime": "node",
+          "version": "24.22.3"
+        }
+      },
+      {
+        "name": "ghidra",
+        "ok": true,
+        "classification": "healthy",
+        "detail": "/opt/ghidra"
+      },
+      {
+        "name": "ghidra-platform",
+        "ok": true,
+        "classification": "healthy",
+        "detail": "linux"
+      },
+      {
+        "name": "ghidra-architecture",
+        "ok": true,
+        "classification": "healthy",
+        "detail": "arm64"
+      },
+      {
+        "name": "ghidra-installation",
+        "ok": true,
+        "classification": "healthy",
+        "detail": "/opt/ghidra/Ghidra/application.properties"
+      },
+      {
+        "name": "ghidra-version",
+        "ok": true,
+        "classification": "healthy",
+        "detail": "12.2; compatible 12.x (>=12.1) release (verified build 12.1.4)"
+      },
+      {
+        "name": "ghidra-headless",
+        "ok": true,
+        "classification": "healthy",
+        "detail": "/opt/ghidra/support/analyzeHeadless"
+      },
+      {
+        "name": "ghidra-native_decompiler",
+        "ok": true,
+        "classification": "healthy",
+        "detail": "/opt/ghidra/Ghidra/Features/Decompiler/os/linux_arm_64/decompile reports elf arm64, which matches linux/arm64"
+      },
+      {
+        "name": "ghidra-java",
+        "ok": true,
+        "classification": "healthy",
+        "detail": "25.0.5; 64-bit; JDK; /opt/java/openjdk; accepted a 64-bit full JDK 25 or newer"
+      }
+    ]
+  },
+  "fixture": {
+    "source": "tools/nbt-re/fixture.c",
+    "source_sha256": "625516accea9dcd9e0653e66425f90facc98845fe439af150e8106815ed55455",
+    "target": "ARM32 QNX ELF, built with existing GCC 8.5 QNX toolchain; not executed",
+    "sha256": "a965ff605c1a769fe4b049155c5c70ba0a65754c80a3200fc1e224efa9c25768",
+    "architecture_observed": "arm",
+    "analysis_exit_code": 0,
+    "decompile_exit_code": 0,
+    "pseudocode": "\nint hu_scale_rpm(int raw)\n\n{\n  int iVar1;\n  \n  if (raw < 0) {\n    iVar1 = -1;\n  }\n  else {\n    iVar1 = raw * 0x19;\n  }\n  return iVar1;\n}\n\n",
+    "input_unchanged": true,
+    "network": "none",
+    "input_read_only": true,
+    "search_exit_code": 0,
+    "search_found_function": true
+  },
+  "mcp": {
+    "status": "measured",
+    "server": {
+      "name": "rea",
+      "version": "6.9.0"
+    },
+    "protocol": "2025-11-25",
+    "tool_count": 255,
+    "open_binary_available": true
+  },
+  "unit_tests": {
+    "command": "python3 -m unittest discover -s tools/tests -p test_nbt_re.py -v",
+    "passed": 4
+  },
+  "limits": [
+    "No files from the installed head unit have been analyzed",
+    "No proof of BMW HMI ABI compatibility",
+    "Other REA engines and agent skill/global registrations intentionally not installed",
+    "MCP stdio initialize/tools-list checked; client auto-registration not performed",
+    "Image build needs network; prepared analysis runs offline"
+  ],
+  "public_export": {
+    "anonymized": true,
+    "note": "Derived copy; original retained locally. VIN, MAC and personal paths replaced. Raw captures are excluded."
+  }
+}

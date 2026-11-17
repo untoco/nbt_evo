@@ -1,0 +1,35 @@
+{
+  "network": {
+    "interface": "",
+    "local_ip": "",
+    "broadcast": "",
+    "gateway_ip": "",
+    "timeout_seconds": 3
+  },
+  "head_unit": {
+    "ssh_ip": "",
+    "firmware": ""
+  },
+  "ssh": {
+    "user": "root",
+    "port": 22,
+    "connect_timeout": 5,
+    "command_timeout": 120,
+    "legacy": false
+  },
+  "capture": {
+    "frameworks": {
+      "libAppFramework.A.so": "/opt/hmi/ID5/lib/libAppFramework.A.so",
+      "libCoreFramework.A.so": "/opt/hmi/ID5/lib/libCoreFramework.A.so"
+    },
+    "runtime_search_dirs": ["/lib", "/usr/lib", "/proc/boot", "/opt/hmi/ID5/lib"],
+    "runtime_files": {
+      "libc.so.3": "",
+      "libm.so.2": "",
+      "libsocket.so.3": "",
+      "libstdc++.so.6": "",
+      "ldqnx.so.2": ""
+    }
+  },
+  "output_dir": ".build/nbt-qnx/sessions"
+}

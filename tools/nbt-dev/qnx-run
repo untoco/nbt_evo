@@ -1,0 +1,49 @@
+#!/bin/bash
+set -euo pipefail
+
+script_dir="$(cd "$(dirname "$0")" && pwd)"
+repo_dir="$(cd "$script_dir/../.." && pwd)"
+case "$(uname -m)" in
+    arm64|aarch64) default_platform=linux/arm64 ;;
+    x86_64|amd64) default_platform=linux/amd64 ;;
+    *) printf 'Unsupported build host architecture\n' >&2; exit 2 ;;
+esac
+platform="${NBT_QNX_PLATFORM:-$default_platform}"
+image="${NBT_QNX_IMAGE:-nbt-evo-qnx-armv7:8.5-${platform##*/}-2026-11-14}"
+command="${1:-check}"
+if [ "$#" -gt 0 ]; then shift; fi
+
+if [ "$command" = build ]; then
+    if [ "$platform" != linux/arm64 ]; then
+        printf 'Local Debian inputs are prepared for linux/arm64 only.\n' >&2
+        exit 2
+    fi
+    test -f "$repo_dir/tools/qnx/Dockerfile" || {
+        printf 'Missing local toolchain source: %s/tools/qnx\n' "$repo_dir" >&2
+        exit 1
+    }
+    if [ "$platform" = linux/arm64 ]; then
+        python3 "$script_dir/qnx-deps.py" check
+        python3 "$script_dir/prepare-qnx-metadata.py"
+    fi
+    python3 "$script_dir/prepare-qnx-build.py" --platform "$platform"
+    exec docker build --platform "$platform" --network "${NBT_QNX_BUILD_NETWORK:-none}" --target base-env \
+        --build-arg BASE=base-8.5 --file "$repo_dir/.build/nbt-qnx/generated/Dockerfile" \
+        --build-context "qnx-sources=$repo_dir/.build/nbt-qnx/sources" \
+        --build-context "qnx-debs=$repo_dir/.build/nbt-qnx/debs-${platform##*/}" \
+        --build-context "qnx-apt-mirror=$repo_dir/.build/nbt-qnx/metadata/apt-mirror" \
+        -t "$image" "$repo_dir/tools/qnx"
+fi
+
+options=(--rm --pull never --platform "$platform" --network none
+    --mount "type=bind,src=$repo_dir,dst=/work" --workdir /work)
+case "$command" in
+    check)
+        exec docker run "${options[@]}" "$image" sh /work/tools/nbt-dev/qnx-check.sh ;;
+    shell)
+        if [ -t 0 ] && [ -t 1 ]; then options+=(-it); fi
+        exec docker run "${options[@]}" "$image" bash "$@" ;;
+    exec)
+        exec docker run "${options[@]}" "$image" "$@" ;;
+    *) printf 'Usage: %s {build|check|shell|exec COMMAND...}\n' "$0" >&2; exit 2 ;;
+esac

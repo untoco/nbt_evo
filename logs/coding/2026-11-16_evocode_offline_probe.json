@@ -1,0 +1,31 @@
+{
+  "date": "2026-11-16",
+  "status": "measured",
+  "scope": "offline mocks only; no vehicle or network",
+  "upstream_commit": "913d5733e04019d4134f825b8fa0cc65782d02f7",
+  "all_reads_security_denied": {
+    "return_code": 0,
+    "file_created": true,
+    "console": [
+      "VIN OFFLINE_FIXTURE: backed up 0 datagroups -> /var/folders/c9/gnf7yqws28zfk2wm79w_8d2m0000gn/T/tmpurpkz6i8/backup.ncd",
+      "Keep this file: writing it back is a clean, already-signed revert."
+    ],
+    "conclusion": "cmd_read skips every UdsError, including NRC 0x33, and emits a zero-datagroup backup"
+  },
+  "wrong_did_echo": {
+    "requested": "F101",
+    "response": "62 F1 90 41 42",
+    "accepted_payload_hex": "4142",
+    "conclusion": "read_did checks positive SID but not echoed DID"
+  },
+  "catalog_version": {
+    "shipped": "006.031.014",
+    "f21_measured": "006.052.007",
+    "loaded_parameters": 5,
+    "conclusion": "catalog.load returns parameters without CAFD/version metadata; caller must enforce compatibility"
+  },
+  "public_export": {
+    "anonymized": true,
+    "note": "Derived copy; original retained locally. VIN, MAC and personal paths replaced. Raw captures are excluded."
+  }
+}

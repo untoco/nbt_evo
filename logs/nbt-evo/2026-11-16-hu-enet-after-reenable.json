@@ -1,0 +1,13 @@
+{
+  "date": "2026-11-16",
+  "scope": "ENET SSH after current power cycle and renewed Enable SSH",
+  "interface": "en5",
+  "local_ip": "169.254.245.198",
+  "ip": "169.254.199.99",
+  "port": 22,
+  "error": "timed out",
+  "public_export": {
+    "anonymized": true,
+    "note": "Derived copy; original retained locally. VIN, MAC and personal paths replaced. Raw captures are excluded."
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "ghidra": {
+    "version": "12.2",
+    "url": "https://github.com/NationalSecurityAgency/ghidra/releases/download/Ghidra_12.2_build/ghidra_12.2_PUBLIC_20261016.zip",
+    "file": "ghidra_12.2_PUBLIC_20261016.zip",
+    "sha256": "2c2cd776db3c1f6a097ba418922378ac3649cadd5e844a6f5f088ae628a7be67"
+  },
+  "node": {
+    "version": "v24.22.3",
+    "url": "https://nodejs.org/dist/v24.22.3/node-v24.22.3-linux-arm64.tar.xz",
+    "file": "node-v24.22.3-linux-arm64.tar.xz",
+    "sha256": "6e51a2ada00f0011cc266f65d98922b403d7ad88f809ca2aa615a5fe1ce6e86c"
+  },
+  "rea": {
+    "version": "6.9.0",
+    "url": "https://registry.npmjs.org/rea-agents/-/rea-agents-6.9.0.tgz",
+    "file": "rea-agents-6.9.0.tgz",
+    "sha512": "2aa0e7d5447904ca87a10dcc1809cfb968922b081d15acf52ffb94360acab7ed56f243ed8183fc01610e5c817594320e055c8fb98208b2dda26a6a3559fdebf2"
+  }
+}

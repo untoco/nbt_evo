@@ -1,0 +1,23 @@
+{
+  "date": "2026-11-17",
+  "scope": "Project migration; offline checks only, no vehicle requests",
+  "unit_tests": {
+    "passed": 34
+  },
+  "qnx": {
+    "c_and_cxx98_compile": "passed",
+    "output": "ELF32 ARM QNX",
+    "hu_execution": "not tested"
+  },
+  "reverse_engineering": {
+    "doctor_exit": 0,
+    "decompile_exit": 0,
+    "input_unchanged": true,
+    "network": "none",
+    "image_id": "sha256:753743e07544e535e625ad8bdf15ea29d5b29d4e29b953946f72e448afa6909f"
+  },
+  "public_export": {
+    "anonymized": true,
+    "raw_data": "local ignored directories only"
+  }
+}

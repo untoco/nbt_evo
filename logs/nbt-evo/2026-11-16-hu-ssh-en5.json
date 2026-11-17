@@ -1,0 +1,15 @@
+{
+  "date": "2026-11-16",
+  "hu_ip": "169.254.199.99",
+  "port": 22,
+  "interface": "en5",
+  "local_ip": "169.254.137.164",
+  "scope": "TCP and SSH banner; IP_BOUND_IF=25 per macOS SDK netinet/in.h; no authentication",
+  "error": "timed out",
+  "arp_after_probe": "169.254.199.99 at (incomplete) on en5",
+  "interpretation": "Direct HU network reachability not established; timeout does not prove SSH disabled.",
+  "public_export": {
+    "anonymized": true,
+    "note": "Derived copy; original retained locally. VIN, MAC and personal paths replaced. Raw captures are excluded."
+  }
+}

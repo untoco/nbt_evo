@@ -1,0 +1,27 @@
+{
+  "date": "2026-11-16",
+  "scope": "DNS/TCP/TLS connectivity only; no client unlock protocol",
+  "server": "pretzel.bavarian-aa.uk",
+  "port": 8443,
+  "checks": [
+    {
+      "address": "172.67.133.200",
+      "tcp": "connected",
+      "tls": "TLSv1.3"
+    },
+    {
+      "address": "104.21.25.82",
+      "tcp": "connected",
+      "tls": "TLSv1.3"
+    }
+  ],
+  "resolved": [
+    "104.21.25.82",
+    "172.67.133.200"
+  ],
+  "elapsed_seconds": 0.63,
+  "public_export": {
+    "anonymized": true,
+    "note": "Derived copy; original retained locally. VIN, MAC and personal paths replaced. Raw captures are excluded."
+  }
+}

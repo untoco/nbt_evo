@@ -1,0 +1,12 @@
+{
+  "image": "nbt-evo-re:ghidra12.2-rea6.9.0",
+  "base_image": "eclipse-temurin:25-jdk-noble@sha256:80f67fb3d6f76e2d817d98a4cc2a9cf05f054d4e6adc5e2144bde671d722e63f",
+  "platform": "linux/arm64",
+  "data_dir": ".build/nbt-re",
+  "timeout_seconds": 1200,
+  "startup_timeout_seconds": 900,
+  "decompile_timeout_seconds": 120,
+  "java_heap": "1536M",
+  "cpus": 2,
+  "memory": "3g"
+}

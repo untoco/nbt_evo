@@ -1,0 +1,110 @@
+{
+  "date": "2026-11-16",
+  "status": "measured",
+  "transport": "modBMW Wi-Fi ENET",
+  "interface": "en0",
+  "local_ip": "169.254.1.50",
+  "discovery": [],
+  "tcp": [
+    {
+      "ip": "169.254.97.91",
+      "port": 6801,
+      "result": "TimeoutError: timed out",
+      "seconds": 3.001
+    },
+    {
+      "ip": "169.254.199.99",
+      "port": 22,
+      "result": "TimeoutError: timed out",
+      "seconds": 3.001
+    },
+    {
+      "ip": "169.254.199.119",
+      "port": 22,
+      "result": "TimeoutError: timed out",
+      "seconds": 3.001
+    }
+  ],
+  "dhcp": {
+    "server": "169.254.128.7",
+    "router": "169.254.128.7",
+    "mask": "255.255.0.0",
+    "advertised_broadcast": "169.254.128.7"
+  },
+  "candidate_1_47": {
+    "tcp6801": "connected",
+    "hu_f101": "01 01 00 13 22 02 04 8f 04 d2 01 00 00 10 00 00 00 06 00 00 1f fd 07 1e 01 08 00 00 27 18 07 1e 01 08 00 00 27 19 07 1e 01 08 00 00 27 20 07 1e 01 08 00 00 27 1c 07 1e 01 08 00 00 27 27 07 1e 01 08 00 00 27 23 07 1e 01 08 00 00 27 22 07 1e 01 08 00 00 27 1f 07 1e 01 08 00 00 27 1a 07 1e 01 08 00 00 27 1e 07 1e 01 0c 00 00 27 0c 07 1e 01 0c 00 00 27 0d 07 1e 01 0c 00 00 27 10 07 1e 01 0c 00 00 27 0b 07 1e 01 a0 00 00 25 d9 03 13 01 a1 00 00 24 a8 ff 07 1e 01 00 00 2f c3 01 04 01 05 00 00 1e f6 06 34 07"
+  },
+  "unicast_discovery": {
+    "peer": [
+      "169.254.1.47",
+      6811
+    ],
+    "hex": "000000320011444941474144523130424d574d4143303230303030303030303031424d5756494e5742413030303030303030303030303030"
+  },
+  "hu_did172a": "00 a9 fe c7 63 ff ff 00 00 00 00 00 00",
+  "official_client_ui": {
+    "status": "confirmed UI screenshot, not proof of SSH listener",
+    "car_ip": "169.254.1.47",
+    "gate": "open",
+    "ssh": "enabled",
+    "hu_ip": "169.254.199.99",
+    "final_error": "unknown server tag 0x84"
+  },
+  "after_enable_tcp": [
+    {
+      "ip": "169.254.199.99",
+      "port": 22,
+      "result": "TimeoutError: timed out",
+      "seconds": 4.003
+    },
+    {
+      "ip": "169.254.199.119",
+      "port": 22,
+      "result": "TimeoutError: timed out",
+      "seconds": 4.002
+    },
+    {
+      "ip": "169.254.1.47",
+      "port": 6801,
+      "result": "connected",
+      "seconds": 0.01
+    }
+  ],
+  "socket_binding": {
+    "IP_BOUND_IF": "en0",
+    "source_ipv4": "169.254.1.50"
+  },
+  "broadcast_discovery": {
+    "destination": "169.254.255.255:6811",
+    "timeout_seconds": 5,
+    "result": "no response observed"
+  },
+  "arp_after_enable": {
+    "169.254.1.47": "02:00:00:00:00:01",
+    "169.254.128.7": "02:00:00:00:00:01",
+    "169.254.199.99": "incomplete",
+    "169.254.199.119": "incomplete"
+  },
+  "route_get": {
+    "169.254.1.47": "en0",
+    "169.254.199.99": "en0"
+  },
+  "decoded": {
+    "vin": "WBA00000000000000",
+    "diag_address": "0x10",
+    "hu_ip": "169.254.199.99",
+    "hu_mask": "255.255.0.0",
+    "hu_gateway": "0.0.0.0"
+  },
+  "limits": [
+    "No SSH banner or authentication reached",
+    "No raw trace of this official client activation; UI result only",
+    "No coding, flash or configuration writes by our probes",
+    "Adapter DHCP option broadcast differs from ifconfig subnet broadcast; cause unknown"
+  ],
+  "public_export": {
+    "anonymized": true,
+    "note": "Derived copy; original retained locally. VIN, MAC and personal paths replaced. Raw captures are excluded."
+  }
+}

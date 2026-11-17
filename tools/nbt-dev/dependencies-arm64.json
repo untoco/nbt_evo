@@ -1,0 +1,1009 @@
+{
+  "date": "2026-11-14",
+  "host_platform": "linux/arm64",
+  "target": "arm-unknown-nto-qnx6.5.0eabi",
+  "debian_snapshot": "20260831T235959Z",
+  "base_image": "debian:bullseye-slim@sha256:cba95a21c96c1f5fc2470081829363eed57706634f7dc26e8c6712934303d57a",
+  "scope": "C/C++ base-env with GCC 8.5.0 and binutils 2.38; includes i386 runtime for legacy QNX tools",
+  "packages": [
+    {
+      "filename": "perl-modules-5.32_5.32.1-4+deb11u5_all.deb",
+      "url": "https://snapshot.debian.org/archive/debian-security/20260831T235959Z/pool/updates/main/p/perl/perl-modules-5.32_5.32.1-4%2bdeb11u5_all.deb",
+      "size": 2823424,
+      "sha256": "fb6770bd430cfa83601ab6e240d5f31d9bd91ab74c0b1f5f10d39a3e1604923f",
+      "package": "perl-modules-5.32",
+      "version": "5.32.1-4+deb11u5",
+      "architecture": "all"
+    },
+    {
+      "filename": "libgdbm6_1.19-2_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/g/gdbm/libgdbm6_1.19-2_arm64.deb",
+      "size": 63980,
+      "sha256": "97a88c2698bd836d04e51ad70c76826850857869b51e90b5343621ba30bbf525",
+      "package": "libgdbm6",
+      "version": "1.19-2",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libgdbm-compat4_1.19-2_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/g/gdbm/libgdbm-compat4_1.19-2_arm64.deb",
+      "size": 44632,
+      "sha256": "0853cc0b0f92784b7fbd193d737c63b1d95f932e2b95dc1bb10c273e01a0f754",
+      "package": "libgdbm-compat4",
+      "version": "1.19-2",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libperl5.32_5.32.1-4+deb11u5_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian-security/20260831T235959Z/pool/updates/main/p/perl/libperl5.32_5.32.1-4%2bdeb11u5_arm64.deb",
+      "size": 3946676,
+      "sha256": "b6812bab0745ee93ac18d8ef2ed8dbac43f6dfbe43cd4b508e441cb1ca4a6aa4",
+      "package": "libperl5.32",
+      "version": "5.32.1-4+deb11u5",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "perl_5.32.1-4+deb11u5_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian-security/20260831T235959Z/pool/updates/main/p/perl/perl_5.32.1-4%2bdeb11u5_arm64.deb",
+      "size": 293632,
+      "sha256": "7f7f87300180dd626c4de00c57c03813fca61df405e95b07b8a39e4233f794bd",
+      "package": "perl",
+      "version": "5.32.1-4+deb11u5",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libsigsegv2_2.13-1_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/libs/libsigsegv/libsigsegv2_2.13-1_arm64.deb",
+      "size": 34696,
+      "sha256": "a356da97f838efd0532d4b88a5028e8a24ba2e83abe8b4b136048b5a313747d4",
+      "package": "libsigsegv2",
+      "version": "2.13-1",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "m4_1.4.18-5_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/m/m4/m4_1.4.18-5_arm64.deb",
+      "size": 198920,
+      "sha256": "59892b0be6d09ae066c93bba43b2f1a82f23984e82698d6f9a06c4a3a9b0a086",
+      "package": "m4",
+      "version": "1.4.18-5",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "flex_2.6.4-8_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/f/flex/flex_2.6.4-8_arm64.deb",
+      "size": 430776,
+      "sha256": "5a2371514606db4ba0fa4a27ea089fdd6c4fbc745714033ce3f942877da964a5",
+      "package": "flex",
+      "version": "2.6.4-8",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libpython3.9-minimal_3.9.2-1+deb11u7_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian-security/20260831T235959Z/pool/updates/main/p/python3.9/libpython3.9-minimal_3.9.2-1%2bdeb11u7_arm64.deb",
+      "size": 802496,
+      "sha256": "af79afdf0c81b349b5de26502f12efe4d6efdbd3692b8af6d49f21d0b29fa512",
+      "package": "libpython3.9-minimal",
+      "version": "3.9.2-1+deb11u7",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libexpat1_2.2.10-2+deb11u7_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian-security/20260831T235959Z/pool/updates/main/e/expat/libexpat1_2.2.10-2%2bdeb11u7_arm64.deb",
+      "size": 85288,
+      "sha256": "41ea5bed7d64c1953371880a06600407a3fb456c84a88d3ab0cf9c5f56369a93",
+      "package": "libexpat1",
+      "version": "2.2.10-2+deb11u7",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "python3.9-minimal_3.9.2-1+deb11u7_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian-security/20260831T235959Z/pool/updates/main/p/python3.9/python3.9-minimal_3.9.2-1%2bdeb11u7_arm64.deb",
+      "size": 1890496,
+      "sha256": "435fdba7cc93d0e661a87960a5bc0e2992cae8ed944b272d4fdc9f0c4856f107",
+      "package": "python3.9-minimal",
+      "version": "3.9.2-1+deb11u7",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "python3-minimal_3.9.2-3_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/p/python3-defaults/python3-minimal_3.9.2-3_arm64.deb",
+      "size": 38248,
+      "sha256": "7c0e0e24c995d3419e3c80fa47407b8fef0b631c70dbadee75d1783e509c4783",
+      "package": "python3-minimal",
+      "version": "3.9.2-3",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "media-types_4.0.0_all.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/m/media-types/media-types_4.0.0_all.deb",
+      "size": 30308,
+      "sha256": "f9835dcf3cdbaf163104d4e511c9c4e0f41a56822e147e57f28f749fcbf7d44c",
+      "package": "media-types",
+      "version": "4.0.0",
+      "architecture": "all"
+    },
+    {
+      "filename": "libmpdec3_2.5.1-1_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/m/mpdecimal/libmpdec3_2.5.1-1_arm64.deb",
+      "size": 84388,
+      "sha256": "171e2581970f36a39f65d1ca3c761e76b103844daae7903fcc07f7c3822a05bb",
+      "package": "libmpdec3",
+      "version": "2.5.1-1",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libncursesw6_6.2+20201114-2+deb11u2_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/n/ncurses/libncursesw6_6.2%2b20201114-2%2bdeb11u2_arm64.deb",
+      "size": 121288,
+      "sha256": "26bd6f488b885d02dfe933038d1e15414f5fe98704b3f49d2cecf665ebcb0f5b",
+      "package": "libncursesw6",
+      "version": "6.2+20201114-2+deb11u2",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "readline-common_8.1-1_all.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/r/readline/readline-common_8.1-1_all.deb",
+      "size": 73736,
+      "sha256": "3f947176ef949f93e4ad5d76c067d33fa97cf90b62ee0748acb4f5f64790edc8",
+      "package": "readline-common",
+      "version": "8.1-1",
+      "architecture": "all"
+    },
+    {
+      "filename": "libreadline8_8.1-1_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/r/readline/libreadline8_8.1-1_arm64.deb",
+      "size": 160276,
+      "sha256": "500c3cdc00dcaea2c4ed736e00bfcb6cb43c3415e808566c5dfa266dbfc0c5e5",
+      "package": "libreadline8",
+      "version": "8.1-1",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libsqlite3-0_3.34.1-3+deb11u1_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian-security/20260831T235959Z/pool/updates/main/s/sqlite3/libsqlite3-0_3.34.1-3%2bdeb11u1_arm64.deb",
+      "size": 749548,
+      "sha256": "6bc5e22efebe95aef8a51b6c96b0fb14ca5cae3502db31aa76a339a4a16caf08",
+      "package": "libsqlite3-0",
+      "version": "3.34.1-3+deb11u1",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libpython3.9-stdlib_3.9.2-1+deb11u7_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian-security/20260831T235959Z/pool/updates/main/p/python3.9/libpython3.9-stdlib_3.9.2-1%2bdeb11u7_arm64.deb",
+      "size": 1659720,
+      "sha256": "c90cff14ea787ad2c86a0c5e808a6de0c640388ad163907275ed30ed9fd35a95",
+      "package": "libpython3.9-stdlib",
+      "version": "3.9.2-1+deb11u7",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "python3.9_3.9.2-1+deb11u7_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian-security/20260831T235959Z/pool/updates/main/p/python3.9/python3.9_3.9.2-1%2bdeb11u7_arm64.deb",
+      "size": 468468,
+      "sha256": "6f132d71c00f6ac65bf9e88fb22dc0f7d3684c09fd51d52a37c34aa74de11198",
+      "package": "python3.9",
+      "version": "3.9.2-1+deb11u7",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libpython3-stdlib_3.9.2-3_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/p/python3-defaults/libpython3-stdlib_3.9.2-3_arm64.deb",
+      "size": 21400,
+      "sha256": "79ec02b6afc81938fd1418170c103cc90aabbc52e0e1738e2744c5a4ec69fde8",
+      "package": "libpython3-stdlib",
+      "version": "3.9.2-3",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "python3_3.9.2-3_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/p/python3-defaults/python3_3.9.2-3_arm64.deb",
+      "size": 37880,
+      "sha256": "79197285d25e73a2a07667efe80af152dd932ac5ef3e13717f1ac824d111ea81",
+      "package": "python3",
+      "version": "3.9.2-3",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "sensible-utils_0.0.14_all.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/s/sensible-utils/sensible-utils_0.0.14_all.deb",
+      "size": 14804,
+      "sha256": "b9a447dc4ec8714196b037e20a2209e62cd669f5450222952f259bda4416b71f",
+      "package": "sensible-utils",
+      "version": "0.0.14",
+      "architecture": "all"
+    },
+    {
+      "filename": "ucf_3.0043+deb11u2_all.deb",
+      "url": "https://snapshot.debian.org/archive/debian-security/20260831T235959Z/pool/updates/main/u/ucf/ucf_3.0043%2bdeb11u2_all.deb",
+      "size": 74256,
+      "sha256": "565bfefc94827598d237320136254a9a5d7e5ca595268553742a13561b468f67",
+      "package": "ucf",
+      "version": "3.0043+deb11u2",
+      "architecture": "all"
+    },
+    {
+      "filename": "tex-common_6.16_all.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/t/tex-common/tex-common_6.16_all.deb",
+      "size": 53664,
+      "sha256": "026ec600ff0100942bd0379d1be9757e502712cd8e7b5836d89c4a9f5bfb4730",
+      "package": "tex-common",
+      "version": "6.16",
+      "architecture": "all"
+    },
+    {
+      "filename": "gcc-10-base_10.2.1-6_i386.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/g/gcc-10/gcc-10-base_10.2.1-6_i386.deb",
+      "size": 201340,
+      "sha256": "81692425b611e12e961bb98d720ebcac8b7682acbfda87bf4dabbfd878bc47e2",
+      "package": "gcc-10-base",
+      "version": "10.2.1-6",
+      "architecture": "i386"
+    },
+    {
+      "filename": "libncurses6_6.2+20201114-2+deb11u2_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/n/ncurses/libncurses6_6.2%2b20201114-2%2bdeb11u2_arm64.deb",
+      "size": 93092,
+      "sha256": "039b71b8839538a92988003e13c29e7cf1149cdc6a77d3de882f1d386a5f3a5c",
+      "package": "libncurses6",
+      "version": "6.2+20201114-2+deb11u2",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libprocps8_2%3a3.3.17-5_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/p/procps/libprocps8_3.3.17-5_arm64.deb",
+      "size": 61900,
+      "sha256": "da75bcd140c98786bbdc5cf1847c85cd28a3d36b76af09b6724e526a656c0580",
+      "package": "libprocps8",
+      "version": "2:3.3.17-5",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "procps_2%3a3.3.17-5_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/p/procps/procps_3.3.17-5_arm64.deb",
+      "size": 497208,
+      "sha256": "2d942bae227468631915e34a78a6edd714dc505bdc250e2251ae196731eb1e8a",
+      "package": "procps",
+      "version": "2:3.3.17-5",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "bzip2_1.0.8-4_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/b/bzip2/bzip2_1.0.8-4_arm64.deb",
+      "size": 48428,
+      "sha256": "672b708d9be7dd8727550e4829d5020d476c18a8328eaa256217e7c20af5e5f0",
+      "package": "bzip2",
+      "version": "1.0.8-4",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "openssl_1.1.1w-0+deb11u8_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian-security/20260831T235959Z/pool/updates/main/o/openssl/openssl_1.1.1w-0%2bdeb11u8_arm64.deb",
+      "size": 837816,
+      "sha256": "7417c339fe961e9e43ad3d2b9988be8695798e874e352c4ff4ef1ce88b06c6de",
+      "package": "openssl",
+      "version": "1.1.1w-0+deb11u8",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "ca-certificates_20250419~deb12u1~deb11u1_all.deb",
+      "url": "https://snapshot.debian.org/archive/debian-security/20260831T235959Z/pool/updates/main/c/ca-certificates/ca-certificates_20250419%7edeb12u1%7edeb11u1_all.deb",
+      "size": 174888,
+      "sha256": "a588acf469f96e272fe3e83225f68ddcda72a95e2dd139086d5edc165d3939e3",
+      "package": "ca-certificates",
+      "version": "20250419~deb12u1~deb11u1",
+      "architecture": "all"
+    },
+    {
+      "filename": "libmagic-mgc_1%3a5.39-3+deb11u1_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/f/file/libmagic-mgc_5.39-3%2bdeb11u1_arm64.deb",
+      "size": 273104,
+      "sha256": "a1395dada64ab96991a37fed27b5f0bb2a23937d2e95a763b4bf86589556b4f1",
+      "package": "libmagic-mgc",
+      "version": "1:5.39-3+deb11u1",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libmagic1_1%3a5.39-3+deb11u1_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/f/file/libmagic1_5.39-3%2bdeb11u1_arm64.deb",
+      "size": 122940,
+      "sha256": "0f3ceb60821aa8387d73ca8630901b37d2c580627c65281cdbe26606f3d28543",
+      "package": "libmagic1",
+      "version": "1:5.39-3+deb11u1",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "file_1%3a5.39-3+deb11u1_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/f/file/file_5.39-3%2bdeb11u1_arm64.deb",
+      "size": 69168,
+      "sha256": "887c37e063e970dd04f50958130a5caa927def5d71b8e60e8730bbd056d216a1",
+      "package": "file",
+      "version": "1:5.39-3+deb11u1",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "xz-utils_5.2.5-2.1~deb11u2_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian-security/20260831T235959Z/pool/updates/main/x/xz-utils/xz-utils_5.2.5-2.1%7edeb11u2_arm64.deb",
+      "size": 219396,
+      "sha256": "624bf3c6d8088493c2429596995d4efdc4c642c1e7bc9ef2fa31118f780b19f4",
+      "package": "xz-utils",
+      "version": "5.2.5-2.1~deb11u2",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "binutils-common_2.35.2-2_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/b/binutils/binutils-common_2.35.2-2_arm64.deb",
+      "size": 2219548,
+      "sha256": "89986c385cd6c0d3adc34d2a03e6c215369222413f556c2dca3a423d8027be8e",
+      "package": "binutils-common",
+      "version": "2.35.2-2",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libbinutils_2.35.2-2_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/b/binutils/libbinutils_2.35.2-2_arm64.deb",
+      "size": 599076,
+      "sha256": "7305a9bb576a975ec0fdc69688dec98a3c102c2026d5ad18bb014e93f1b076aa",
+      "package": "libbinutils",
+      "version": "2.35.2-2",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libctf-nobfd0_2.35.2-2_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/b/binutils/libctf-nobfd0_2.35.2-2_arm64.deb",
+      "size": 108248,
+      "sha256": "c5e96863d481de39e224fa9269e2e5716faf9e583f8fa93723dabd55b028b319",
+      "package": "libctf-nobfd0",
+      "version": "2.35.2-2",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libctf0_2.35.2-2_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/b/binutils/libctf0_2.35.2-2_arm64.deb",
+      "size": 51016,
+      "sha256": "9f0b5320bde7069030d9dcded5cdc395c77fd2b8478cf8ccfcaf2d1bbe145105",
+      "package": "libctf0",
+      "version": "2.35.2-2",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "binutils-aarch64-linux-gnu_2.35.2-2_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/b/binutils/binutils-aarch64-linux-gnu_2.35.2-2_arm64.deb",
+      "size": 2471968,
+      "sha256": "53e2714179d1334b66e3e6b046fb035c0f24d9e276e5606493ac26e5a4a84446",
+      "package": "binutils-aarch64-linux-gnu",
+      "version": "2.35.2-2",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "binutils_2.35.2-2_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/b/binutils/binutils_2.35.2-2_arm64.deb",
+      "size": 61224,
+      "sha256": "0ba499b4ca7fbdcce3fcfce7a5c1fdbd1f7b7b691cf70cfed85e584a9af6ade1",
+      "package": "binutils",
+      "version": "2.35.2-2",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "bison_2%3a3.7.5+dfsg-1_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/b/bison/bison_3.7.5%2bdfsg-1_arm64.deb",
+      "size": 1084356,
+      "sha256": "0bca4b0849723c796fd8cca81bdb7328a9c3b6724be8e38e4da3f7f668bf31c7",
+      "package": "bison",
+      "version": "2:3.7.5+dfsg-1",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libc-dev-bin_2.31-13+deb11u14_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian-security/20260831T235959Z/pool/updates/main/g/glibc/libc-dev-bin_2.31-13%2bdeb11u14_arm64.deb",
+      "size": 273488,
+      "sha256": "fd6bb216aa6544e3f2c26de53448804c4cbc274cf1700ddf055e642eade811f1",
+      "package": "libc-dev-bin",
+      "version": "2.31-13+deb11u14",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "linux-libc-dev_5.10.262-1_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian-security/20260831T235959Z/pool/updates/main/l/linux/linux-libc-dev_5.10.262-1_arm64.deb",
+      "size": 1915960,
+      "sha256": "5060053f18a14a9be3c4d27274ab81598809d7927083d9cd8ca738aeb110885e",
+      "package": "linux-libc-dev",
+      "version": "5.10.262-1",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libcrypt-dev_1%3a4.4.18-4_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/libx/libxcrypt/libcrypt-dev_4.4.18-4_arm64.deb",
+      "size": 108344,
+      "sha256": "5309fdf445acc72794b9d134e9625746ffad2b865c6432abcd08ef097587bde1",
+      "package": "libcrypt-dev",
+      "version": "1:4.4.18-4",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libtirpc-dev_1.3.1-1+deb11u1_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/libt/libtirpc/libtirpc-dev_1.3.1-1%2bdeb11u1_arm64.deb",
+      "size": 193084,
+      "sha256": "8b30e69481d15fc1a311db8fc2a32413466d64451ec1317f4753eb70f7cc15d6",
+      "package": "libtirpc-dev",
+      "version": "1.3.1-1+deb11u1",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libnsl-dev_1.3.0-2_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/libn/libnsl/libnsl-dev_1.3.0-2_arm64.deb",
+      "size": 66132,
+      "sha256": "baf8a2ef1e9faec26dd84e62d0e8b653f54d2211a7a89c1b67965aee8a3da790",
+      "package": "libnsl-dev",
+      "version": "1.3.0-2",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libc6-dev_2.31-13+deb11u14_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian-security/20260831T235959Z/pool/updates/main/g/glibc/libc6-dev_2.31-13%2bdeb11u14_arm64.deb",
+      "size": 2030500,
+      "sha256": "e7da98c4a0e13c1935a1410d56c5f4b9217864c715eeac9e79acf08fe993df3e",
+      "package": "libc6-dev",
+      "version": "2.31-13+deb11u14",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libisl23_0.23-1_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/i/isl/libisl23_0.23-1_arm64.deb",
+      "size": 590220,
+      "sha256": "23a7093e1b950f84faf56d35cba03f981d63e0199f5747df2706ef0401792804",
+      "package": "libisl23",
+      "version": "0.23-1",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libmpfr6_4.1.0-3_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/m/mpfr4/libmpfr6_4.1.0-3_arm64.deb",
+      "size": 828632,
+      "sha256": "bfcc2e0c8863730cb8a98bfebce01c123370e4efa3b0d52cb8cf817ef6a06d88",
+      "package": "libmpfr6",
+      "version": "4.1.0-3",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libmpc3_1.2.0-1_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/m/mpclib3/libmpc3_1.2.0-1_arm64.deb",
+      "size": 43204,
+      "sha256": "a138ffba2e730fc8bf50004791f411f7850159a6d916a704b3f062770f7bc375",
+      "package": "libmpc3",
+      "version": "1.2.0-1",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "cpp-10_10.2.1-6_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/g/gcc-10/cpp-10_10.2.1-6_arm64.deb",
+      "size": 7755568,
+      "sha256": "0a169c9df87dfc57b5a794a2a3eabc34234360231c0677157c4da74fba15e3b1",
+      "package": "cpp-10",
+      "version": "10.2.1-6",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "cpp_4%3a10.2.1-1_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/g/gcc-defaults/cpp_10.2.1-1_arm64.deb",
+      "size": 19744,
+      "sha256": "4cacdf964d30a2724521a410108cafa6d21c28f934a3c4b3969d88db6086bcb9",
+      "package": "cpp",
+      "version": "4:10.2.1-1",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libcc1-0_10.2.1-6_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/g/gcc-10/libcc1-0_10.2.1-6_arm64.deb",
+      "size": 45120,
+      "sha256": "2178422a44fac1858293358bdd2cd748c48f4c844049ed043385a8d76de6a58a",
+      "package": "libcc1-0",
+      "version": "10.2.1-6",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libgomp1_10.2.1-6_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/g/gcc-10/libgomp1_10.2.1-6_arm64.deb",
+      "size": 91556,
+      "sha256": "813af2e0b8ba0a7cea18c988cd843412ef6d0415700fc860d62816750e741670",
+      "package": "libgomp1",
+      "version": "10.2.1-6",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libitm1_10.2.1-6_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/g/gcc-10/libitm1_10.2.1-6_arm64.deb",
+      "size": 23808,
+      "sha256": "e77553b598b09a06b74c7603107cbac2d8dae6ae750cf6728035ead945003c60",
+      "package": "libitm1",
+      "version": "10.2.1-6",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libatomic1_10.2.1-6_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/g/gcc-10/libatomic1_10.2.1-6_arm64.deb",
+      "size": 9468,
+      "sha256": "d0b8a02896479a6eac49019d71142da9561482759f40eb7aeb15cfdc7d3e39ec",
+      "package": "libatomic1",
+      "version": "10.2.1-6",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libasan6_10.2.1-6_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/g/gcc-10/libasan6_10.2.1-6_arm64.deb",
+      "size": 2001636,
+      "sha256": "a31acf1c1087caf54e3296c5aead6ec0a19141cb14319fa358b35fd305db1d5e",
+      "package": "libasan6",
+      "version": "10.2.1-6",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "liblsan0_10.2.1-6_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/g/gcc-10/liblsan0_10.2.1-6_arm64.deb",
+      "size": 793828,
+      "sha256": "ef39e7a56aa2b6cbe47c926bba195f01755fda0bb0733717d7c803609b8c18e1",
+      "package": "liblsan0",
+      "version": "10.2.1-6",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libtsan0_10.2.1-6_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/g/gcc-10/libtsan0_10.2.1-6_arm64.deb",
+      "size": 1957408,
+      "sha256": "bb5ec0dfdcac7b2e93d161f7092a9a098d1001591cd016093e7f41fda6864b3c",
+      "package": "libtsan0",
+      "version": "10.2.1-6",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libubsan1_10.2.1-6_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/g/gcc-10/libubsan1_10.2.1-6_arm64.deb",
+      "size": 759252,
+      "sha256": "14b4d134e2efc2d7afefce5affe89476117dd7a1894bdff158c7b5e0631052bc",
+      "package": "libubsan1",
+      "version": "10.2.1-6",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libgcc-10-dev_10.2.1-6_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/g/gcc-10/libgcc-10-dev_10.2.1-6_arm64.deb",
+      "size": 876396,
+      "sha256": "80fc73d339ada2e194175afe83cd89014565242153b6e3c2128849d8817da367",
+      "package": "libgcc-10-dev",
+      "version": "10.2.1-6",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "gcc-10_10.2.1-6_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/g/gcc-10/gcc-10_10.2.1-6_arm64.deb",
+      "size": 15389360,
+      "sha256": "fbbb8fa62df2f2b2224e1337c8ba434b71d49f58ad09d479fd044c6ab06ad6e9",
+      "package": "gcc-10",
+      "version": "10.2.1-6",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "gcc_4%3a10.2.1-1_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/g/gcc-defaults/gcc_10.2.1-1_arm64.deb",
+      "size": 5208,
+      "sha256": "02e5b8d60a8e187615a81f844c59ea2e7ebd44e46ad0756363ad34809175225a",
+      "package": "gcc",
+      "version": "4:10.2.1-1",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libstdc++-10-dev_10.2.1-6_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/g/gcc-10/libstdc%2b%2b-10-dev_10.2.1-6_arm64.deb",
+      "size": 1703864,
+      "sha256": "cee7ca63613b50a8a51cc670db385c7e6d1181b72c94148fc8b7992e4570782d",
+      "package": "libstdc++-10-dev",
+      "version": "10.2.1-6",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "g++-10_10.2.1-6_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/g/gcc-10/g%2b%2b-10_10.2.1-6_arm64.deb",
+      "size": 8557020,
+      "sha256": "6525b7dac398b9597ddafac919f0cd3879448301336f3be341992b48de640669",
+      "package": "g++-10",
+      "version": "10.2.1-6",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "g++_4%3a10.2.1-1_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/g/gcc-defaults/g%2b%2b_10.2.1-1_arm64.deb",
+      "size": 1628,
+      "sha256": "747e9de43d2bdf99a9d8e0d757e73d9a9c421b8e8244c322a4b97de37cb32dde",
+      "package": "g++",
+      "version": "4:10.2.1-1",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "make_4.3-4.1_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/m/make-dfsg/make_4.3-4.1_arm64.deb",
+      "size": 391184,
+      "sha256": "7ef5f5c0e3f909c811f941598107119af0a0554641b5cc590f584cea6a55d204",
+      "package": "make",
+      "version": "4.3-4.1",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libdpkg-perl_1.20.14_all.deb",
+      "url": "https://snapshot.debian.org/archive/debian-security/20260831T235959Z/pool/updates/main/d/dpkg/libdpkg-perl_1.20.14_all.deb",
+      "size": 1555080,
+      "sha256": "9b2c57d03cbb987948e82448a8753ea6a9f90a5ce22b521fbc4f9a3cc9b85961",
+      "package": "libdpkg-perl",
+      "version": "1.20.14",
+      "architecture": "all"
+    },
+    {
+      "filename": "patch_2.7.6-7_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/p/patch/patch_2.7.6-7_arm64.deb",
+      "size": 120712,
+      "sha256": "11e5e56f3cb4b306c9589bb37f9c701bf23bb37c410bac12e6a50d6461e71bd6",
+      "package": "patch",
+      "version": "2.7.6-7",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "dpkg-dev_1.20.14_all.deb",
+      "url": "https://snapshot.debian.org/archive/debian-security/20260831T235959Z/pool/updates/main/d/dpkg/dpkg-dev_1.20.14_all.deb",
+      "size": 2317044,
+      "sha256": "68ac1a48ac6f03d7e23fbaf5935552c3b934385c3bdfdccb29f615a66a3141d2",
+      "package": "dpkg-dev",
+      "version": "1.20.14",
+      "architecture": "all"
+    },
+    {
+      "filename": "build-essential_12.9_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/b/build-essential/build-essential_12.9_arm64.deb",
+      "size": 7704,
+      "sha256": "cb14b62d98e911ae8cb32248f9f46de50cc09d46ec9dcb3b9bfda1ff2e0abf49",
+      "package": "build-essential",
+      "version": "12.9",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "cmake-data_3.18.4-2+deb11u1_all.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/c/cmake/cmake-data_3.18.4-2%2bdeb11u1_all.deb",
+      "size": 1725228,
+      "sha256": "d33774274847f8db3bc252b3724cc452faeb3d0980b051e087fce5f46c099c22",
+      "package": "cmake-data",
+      "version": "3.18.4-2+deb11u1",
+      "architecture": "all"
+    },
+    {
+      "filename": "libicu67_67.1-7+deb11u1_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian-security/20260831T235959Z/pool/updates/main/i/icu/libicu67_67.1-7%2bdeb11u1_arm64.deb",
+      "size": 8466388,
+      "sha256": "dc6962480cb81fbf46b69397a10b778151027c917a1e0d40f2c8ed9ec881f8d0",
+      "package": "libicu67",
+      "version": "67.1-7+deb11u1",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libxml2_2.9.10+dfsg-6.7+deb11u10_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian-security/20260831T235959Z/pool/updates/main/libx/libxml2/libxml2_2.9.10%2bdfsg-6.7%2bdeb11u10_arm64.deb",
+      "size": 631124,
+      "sha256": "a3abe9d3e74ba25888559c830398144deb321475c6a19acecd63814593ba914f",
+      "package": "libxml2",
+      "version": "2.9.10+dfsg-6.7+deb11u10",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libarchive13_3.4.3-2+deb11u5_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian-security/20260831T235959Z/pool/updates/main/liba/libarchive/libarchive13_3.4.3-2%2bdeb11u5_arm64.deb",
+      "size": 321344,
+      "sha256": "c3e06e5ea07a969621e8c60f2d0d8ddad8236b4b3cd7a4bb62b9d9c4339541c7",
+      "package": "libarchive13",
+      "version": "3.4.3-2+deb11u5",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libbrotli1_1.0.9-2+b2_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/b/brotli/libbrotli1_1.0.9-2%2bb2_arm64.deb",
+      "size": 266964,
+      "sha256": "52ca7f90de6cb6576a0a5cf5712fc4ae7344b79c44b8a1548087fd5d92bf1f64",
+      "package": "libbrotli1",
+      "version": "1.0.9-2+b2",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libsasl2-modules-db_2.1.27+dfsg-2.1+deb11u1_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/c/cyrus-sasl2/libsasl2-modules-db_2.1.27%2bdfsg-2.1%2bdeb11u1_arm64.deb",
+      "size": 69400,
+      "sha256": "006239b28681f507db0937125a13810c8cf03e3fffe9b7c8433445af86805d12",
+      "package": "libsasl2-modules-db",
+      "version": "2.1.27+dfsg-2.1+deb11u1",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libsasl2-2_2.1.27+dfsg-2.1+deb11u1_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/c/cyrus-sasl2/libsasl2-2_2.1.27%2bdfsg-2.1%2bdeb11u1_arm64.deb",
+      "size": 105104,
+      "sha256": "fc4c943224b8fb6aaa86439ff60dcec4ca1aeb4730f121e594c68a37b3e0c88f",
+      "package": "libsasl2-2",
+      "version": "2.1.27+dfsg-2.1+deb11u1",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libldap-2.4-2_2.4.57+dfsg-3+deb11u1_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/o/openldap/libldap-2.4-2_2.4.57%2bdfsg-3%2bdeb11u1_arm64.deb",
+      "size": 221596,
+      "sha256": "4803bddc9ff915cd91d0cc4ec22c6ab5e07b213e6a44118025fdab8bfa6d20ba",
+      "package": "libldap-2.4-2",
+      "version": "2.4.57+dfsg-3+deb11u1",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libnghttp2-14_1.43.0-1+deb11u3_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian-security/20260831T235959Z/pool/updates/main/n/nghttp2/libnghttp2-14_1.43.0-1%2bdeb11u3_arm64.deb",
+      "size": 74364,
+      "sha256": "cc931465b8e5afd330f67336a579f28d9dc72e1d065140146652279d9bded4a5",
+      "package": "libnghttp2-14",
+      "version": "1.43.0-1+deb11u3",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libpsl5_0.21.0-1.2_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/libp/libpsl/libpsl5_0.21.0-1.2_arm64.deb",
+      "size": 57080,
+      "sha256": "12637647316e770c37a4bfec7aef27ed472f2850b5f59dd508505dda32519584",
+      "package": "libpsl5",
+      "version": "0.21.0-1.2",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "librtmp1_2.4+20151223.gitfa8646d.1-2+b2_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/r/rtmpdump/librtmp1_2.4%2b20151223.gitfa8646d.1-2%2bb2_arm64.deb",
+      "size": 59364,
+      "sha256": "a3a1a6e4b02bcd3254e932b1972ed744082fd7dd5cc1545eec3dd3d539ce6c93",
+      "package": "librtmp1",
+      "version": "2.4+20151223.gitfa8646d.1-2+b2",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libssh2-1_1.9.0-2+deb11u1_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/libs/libssh2/libssh2-1_1.9.0-2%2bdeb11u1_arm64.deb",
+      "size": 150468,
+      "sha256": "35d5bc7a9c7b7b9eabca475598142cd2dad24118e78822670b928ab07d2a3ba4",
+      "package": "libssh2-1",
+      "version": "1.9.0-2+deb11u1",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libcurl4_7.74.0-1.3+deb11u16_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian-security/20260831T235959Z/pool/updates/main/c/curl/libcurl4_7.74.0-1.3%2bdeb11u16_arm64.deb",
+      "size": 326616,
+      "sha256": "1c621b8c4787c4c155c198552b4d8d47ec6e3a4cb87a371fffef790f870a476b",
+      "package": "libcurl4",
+      "version": "7.74.0-1.3+deb11u16",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libjsoncpp24_1.9.4-4_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/libj/libjsoncpp/libjsoncpp24_1.9.4-4_arm64.deb",
+      "size": 72492,
+      "sha256": "b8e04a858f2059d4e9d66b79f359995e38ff8c9509175647d6f98ba1f8b29b2a",
+      "package": "libjsoncpp24",
+      "version": "1.9.4-4",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "librhash0_1.4.1-2_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/r/rhash/librhash0_1.4.1-2_arm64.deb",
+      "size": 126680,
+      "sha256": "8ec3ca7e40372621f347b8611fc2a7605ff71e06a7b99a2f19efa5af0d032628",
+      "package": "librhash0",
+      "version": "1.4.1-2",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libuv1_1.40.0-2+deb11u1_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/libu/libuv1/libuv1_1.40.0-2%2bdeb11u1_arm64.deb",
+      "size": 125816,
+      "sha256": "e53c7b7877e90cd6a773e54c82da1b30ba057b429d6ca8b95245da6ab4bb119d",
+      "package": "libuv1",
+      "version": "1.40.0-2+deb11u1",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "cmake_3.18.4-2+deb11u1_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/c/cmake/cmake_3.18.4-2%2bdeb11u1_arm64.deb",
+      "size": 3673204,
+      "sha256": "c0cfa915f09a652f081a32e9a2b8795af496e305a949ff9cfceeaa301b6d5d69",
+      "package": "cmake",
+      "version": "3.18.4-2+deb11u1",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "curl_7.74.0-1.3+deb11u16_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian-security/20260831T235959Z/pool/updates/main/c/curl/curl_7.74.0-1.3%2bdeb11u16_arm64.deb",
+      "size": 265608,
+      "sha256": "4d7df63b1d6364caa529d1613c5c70e49af815e4846cbcacdd185fdedb4b51e2",
+      "package": "curl",
+      "version": "7.74.0-1.3+deb11u16",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libgcc-s1_10.2.1-6_i386.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/g/gcc-10/libgcc-s1_10.2.1-6_i386.deb",
+      "size": 49604,
+      "sha256": "0a52edec5d626f8d9acf1998248d276760aff3950f44a308d27d4a2a488fe18d",
+      "package": "libgcc-s1",
+      "version": "10.2.1-6",
+      "architecture": "i386"
+    },
+    {
+      "filename": "libcrypt1_1%3a4.4.18-4_i386.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/libx/libxcrypt/libcrypt1_4.4.18-4_i386.deb",
+      "size": 97232,
+      "sha256": "202217d6ca6ddf9ee5e13ad6b96feef1b3cbc8b2e0282f87883ae50a9f7325f7",
+      "package": "libcrypt1",
+      "version": "1:4.4.18-4",
+      "architecture": "i386"
+    },
+    {
+      "filename": "libc6_2.31-13+deb11u14_i386.deb",
+      "url": "https://snapshot.debian.org/archive/debian-security/20260831T235959Z/pool/updates/main/g/glibc/libc6_2.31-13%2bdeb11u14_i386.deb",
+      "size": 2755056,
+      "sha256": "5f125df2cd4a9ba91e8f2b0fad551e0527a5945709aa7781273a191ab474cc75",
+      "package": "libc6",
+      "version": "2.31-13+deb11u14",
+      "architecture": "i386"
+    },
+    {
+      "filename": "libglib2.0-0_2.66.8-1+deb11u8_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian-security/20260831T235959Z/pool/updates/main/g/glib2.0/libglib2.0-0_2.66.8-1%2bdeb11u8_arm64.deb",
+      "size": 1290200,
+      "sha256": "ab5094e1692417fbf9543c834d0b18a5cde9fe7a0f68f480279bda809a5c134c",
+      "package": "libglib2.0-0",
+      "version": "2.66.8-1+deb11u8",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libgmpxx4ldbl_2%3a6.2.1+dfsg-1+deb11u1_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/g/gmp/libgmpxx4ldbl_6.2.1%2bdfsg-1%2bdeb11u1_arm64.deb",
+      "size": 337168,
+      "sha256": "ce93748e956da23fc298604b43575c36a2f1d6416906b4915dff8a493f87858f",
+      "package": "libgmpxx4ldbl",
+      "version": "2:6.2.1+dfsg-1+deb11u1",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libgmp-dev_2%3a6.2.1+dfsg-1+deb11u1_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/g/gmp/libgmp-dev_6.2.1%2bdfsg-1%2bdeb11u1_arm64.deb",
+      "size": 624900,
+      "sha256": "389b3d367d861af04a78dea925ddf780567f5586ee943f75d05c5c8696065a98",
+      "package": "libgmp-dev",
+      "version": "2:6.2.1+dfsg-1+deb11u1",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libmpfr-dev_4.1.0-3_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/m/mpfr4/libmpfr-dev_4.1.0-3_arm64.deb",
+      "size": 235612,
+      "sha256": "c04e6da8f722d6421f3464dcb202e2ef1812a16b09899bbc1d95c6367fd2be71",
+      "package": "libmpfr-dev",
+      "version": "4.1.0-3",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libmpc-dev_1.2.0-1_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/m/mpclib3/libmpc-dev_1.2.0-1_arm64.deb",
+      "size": 54616,
+      "sha256": "964d0045a62ae896315d4753db4d7b536e6c016ba81c3016b7fcf8e864c71c6d",
+      "package": "libmpc-dev",
+      "version": "1.2.0-1",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "libstdc++6_10.2.1-6_i386.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/g/gcc-10/libstdc%2b%2b6_10.2.1-6_i386.deb",
+      "size": 526892,
+      "sha256": "ef9b1f03163ad32c8f940b9a9e417773ff3d2f08ad2044d9c28fed5b81de3b7e",
+      "package": "libstdc++6",
+      "version": "10.2.1-6",
+      "architecture": "i386"
+    },
+    {
+      "filename": "libtext-unidecode-perl_1.30-1_all.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/libt/libtext-unidecode-perl/libtext-unidecode-perl_1.30-1_all.deb",
+      "size": 103056,
+      "sha256": "b9116a8a0d7c2f878ed37517c8d714c23b0578fa5cc4002b473521d82cea62fd",
+      "package": "libtext-unidecode-perl",
+      "version": "1.30-1",
+      "architecture": "all"
+    },
+    {
+      "filename": "libxml-namespacesupport-perl_1.12-1.1_all.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/libx/libxml-namespacesupport-perl/libxml-namespacesupport-perl_1.12-1.1_all.deb",
+      "size": 14928,
+      "sha256": "2acfb65edfe35ede8caf9af10bc12fa8428724c637e71f228f943031d3c0fdd0",
+      "package": "libxml-namespacesupport-perl",
+      "version": "1.12-1.1",
+      "architecture": "all"
+    },
+    {
+      "filename": "libxml-sax-base-perl_1.09-1.1_all.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/libx/libxml-sax-base-perl/libxml-sax-base-perl_1.09-1.1_all.deb",
+      "size": 20680,
+      "sha256": "61a97d67ce93cf2a3293ffbad6115b8ded8a7122bb0d64a233356b6174e02b1d",
+      "package": "libxml-sax-base-perl",
+      "version": "1.09-1.1",
+      "architecture": "all"
+    },
+    {
+      "filename": "libxml-sax-perl_1.02+dfsg-1_all.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/libx/libxml-sax-perl/libxml-sax-perl_1.02%2bdfsg-1_all.deb",
+      "size": 58976,
+      "sha256": "1a90d06bb92dda889daea6f5bd6262619f0a3c2ea2356e0a712d62e638187c25",
+      "package": "libxml-sax-perl",
+      "version": "1.02+dfsg-1",
+      "architecture": "all"
+    },
+    {
+      "filename": "libxml-libxml-perl_2.0134+dfsg-2+b1_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/libx/libxml-libxml-perl/libxml-libxml-perl_2.0134%2bdfsg-2%2bb1_arm64.deb",
+      "size": 326416,
+      "sha256": "8672dd32079f53e8d4657e400cc23e91948e050bc02e636c3a709cd1b4558bb0",
+      "package": "libxml-libxml-perl",
+      "version": "2.0134+dfsg-2+b1",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "ninja-build_1.10.1-1_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/n/ninja-build/ninja-build_1.10.1-1_arm64.deb",
+      "size": 106824,
+      "sha256": "e7c18cbc561a1805105fc0ca36d5a7a3b4d54348daece074aaf4869c65a0cf61",
+      "package": "ninja-build",
+      "version": "1.10.1-1",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "python3-pkg-resources_52.0.0-4+deb11u2_all.deb",
+      "url": "https://snapshot.debian.org/archive/debian-security/20260831T235959Z/pool/updates/main/s/setuptools/python3-pkg-resources_52.0.0-4%2bdeb11u2_all.deb",
+      "size": 189896,
+      "sha256": "02a86666b1e705e27eaaca2a379c1009c37a0d1f1db2f75ba4a4bde123f83d52",
+      "package": "python3-pkg-resources",
+      "version": "52.0.0-4+deb11u2",
+      "architecture": "all"
+    },
+    {
+      "filename": "meson_0.56.2-1_all.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/m/meson/meson_0.56.2-1_all.deb",
+      "size": 436560,
+      "sha256": "ef6dda3268d41ceb6218da4668598242aee0b4ca1ff8394068b5243b73eb4544",
+      "package": "meson",
+      "version": "0.56.2-1",
+      "architecture": "all"
+    },
+    {
+      "filename": "pkg-config_0.29.2-1_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/p/pkg-config/pkg-config_0.29.2-1_arm64.deb",
+      "size": 63644,
+      "sha256": "074d64f7a6bb5fb9139661aea20815438d8ffe8d7bb44b7c3f58e220c153fdbd",
+      "package": "pkg-config",
+      "version": "0.29.2-1",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "texinfo_6.7.0.dfsg.2-6_arm64.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/t/texinfo/texinfo_6.7.0.dfsg.2-6_arm64.deb",
+      "size": 1753048,
+      "sha256": "1e90830fdf21072c60441d9756e2d2da504e9c741df05294474d8364dc7179b1",
+      "package": "texinfo",
+      "version": "6.7.0.dfsg.2-6",
+      "architecture": "arm64"
+    },
+    {
+      "filename": "zlib1g_1%3a1.2.11.dfsg-2+deb11u2_i386.deb",
+      "url": "https://snapshot.debian.org/archive/debian/20260831T235959Z/pool/main/z/zlib/zlib1g_1.2.11.dfsg-2%2bdeb11u2_i386.deb",
+      "size": 93584,
+      "sha256": "1453d7b94bc1a3f71363d4dc472f8a4aeb670b7db91c1b75b6ed6d0cc22d7f41",
+      "package": "zlib1g",
+      "version": "1:1.2.11.dfsg-2+deb11u2",
+      "architecture": "i386"
+    }
+  ]
+}

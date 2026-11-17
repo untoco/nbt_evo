@@ -1,0 +1,11 @@
+/.build/
+/private/
+/tools/qnx/
+/tools/qnx-deps/
+/config/nbt/*.local.json
+__pycache__/
+.DS_Store
+*.pcap
+*.pcapng
+*.pem
+*.key

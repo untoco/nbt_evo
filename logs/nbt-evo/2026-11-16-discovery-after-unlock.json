@@ -1,0 +1,17 @@
+{
+  "date": "2026-11-16",
+  "scope": "one interface-bound HSFZ discovery after SSH client operation, 8-second receive window",
+  "interface": "en5",
+  "responses": [
+    {
+      "ip": "169.254.97.91",
+      "port": 6811,
+      "hex": "00 00 00 32 00 11 44 49 41 47 41 44 52 31 30 42 4d 57 4d 41 43 30 30 31 41 33 37 32 32 46 41 38 41 42 4d 57 56 49 4e 57 42 41 30 30 30 30 30 30 30 30 30 30 30 30 30 30",
+      "text": "DIAGADR10BMWMAC020000000001BMWVINWBA00000000000000"
+    }
+  ],
+  "public_export": {
+    "anonymized": true,
+    "note": "Derived copy; original retained locally. VIN, MAC and personal paths replaced. Raw captures are excluded."
+  }
+}

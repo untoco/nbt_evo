@@ -1,0 +1,146 @@
+{
+  "pcap_sha256": "e0db29a90da252b102c65dfc6302d2ba5a22044cefb4fde36c0f6df07521cc0c",
+  "scope": "offline HSFZ metadata only; sensitive payloads omitted",
+  "records": [
+    {
+      "kind": "0x1",
+      "length": 10,
+      "source_ecu": "0xf4",
+      "target_ecu": "0x63",
+      "service": "0x31",
+      "uds_length": 8,
+      "subfunction": "0x1",
+      "routine": "0xfd2e",
+      "option_bytes": 4,
+      "direction": "request",
+      "timestamp": 1794842730.399395
+    },
+    {
+      "kind": "0x2",
+      "length": 7,
+      "direction": "response",
+      "timestamp": 1794842730.399943
+    },
+    {
+      "kind": "0x1",
+      "length": 14,
+      "source_ecu": "0x63",
+      "target_ecu": "0xf4",
+      "service": "0x71",
+      "uds_length": 12,
+      "subfunction": "0x1",
+      "routine": "0xfd2e",
+      "option_bytes": 8,
+      "direction": "response",
+      "timestamp": 1794842730.420504
+    },
+    {
+      "kind": "0x1",
+      "length": 266,
+      "source_ecu": "0xf4",
+      "target_ecu": "0x63",
+      "service": "0x31",
+      "uds_length": 264,
+      "subfunction": "0x1",
+      "routine": "0xfd2f",
+      "option_bytes": 260,
+      "direction": "request",
+      "timestamp": 1794842730.63253
+    },
+    {
+      "kind": "0x2",
+      "length": 7,
+      "direction": "response",
+      "timestamp": 1794842730.633272
+    },
+    {
+      "kind": "0x1",
+      "length": 6,
+      "source_ecu": "0x63",
+      "target_ecu": "0xf4",
+      "service": "0x71",
+      "uds_length": 4,
+      "subfunction": "0x1",
+      "routine": "0xfd2f",
+      "option_bytes": 0,
+      "direction": "response",
+      "timestamp": 1794842730.744048
+    },
+    {
+      "kind": "0x1",
+      "length": 6,
+      "source_ecu": "0xf4",
+      "target_ecu": "0x63",
+      "service": "0x31",
+      "uds_length": 4,
+      "subfunction": "0x1",
+      "routine": "0xfdac",
+      "option_bytes": 0,
+      "direction": "request",
+      "timestamp": 1794842730.867606
+    },
+    {
+      "kind": "0x2",
+      "length": 6,
+      "direction": "response",
+      "timestamp": 1794842730.868582
+    },
+    {
+      "kind": "0x1",
+      "length": 6,
+      "source_ecu": "0x63",
+      "target_ecu": "0xf4",
+      "service": "0x71",
+      "uds_length": 4,
+      "subfunction": "0x1",
+      "routine": "0xfdac",
+      "option_bytes": 0,
+      "direction": "response",
+      "timestamp": 1794842730.894208
+    },
+    {
+      "kind": "0x1",
+      "length": 5,
+      "source_ecu": "0xf4",
+      "target_ecu": "0x63",
+      "service": "0x22",
+      "uds_length": 3,
+      "did": "0x172a",
+      "direction": "request",
+      "timestamp": 1794842731.118488
+    },
+    {
+      "kind": "0x2",
+      "length": 5,
+      "direction": "response",
+      "timestamp": 1794842731.119162
+    },
+    {
+      "kind": "0x1",
+      "length": 5,
+      "source_ecu": "0x63",
+      "target_ecu": "0xf4",
+      "service": "0x7f",
+      "uds_length": 3,
+      "request_service": "0x22",
+      "nrc": "0x78",
+      "direction": "response",
+      "timestamp": 1794842731.168362
+    },
+    {
+      "kind": "0x1",
+      "length": 18,
+      "source_ecu": "0x63",
+      "target_ecu": "0xf4",
+      "service": "0x62",
+      "uds_length": 16,
+      "did": "0x172a",
+      "direction": "response",
+      "timestamp": 1794842735.141146
+    }
+  ],
+  "public_export": {
+    "anonymized": true,
+    "note": "Derived copy; original retained locally. VIN, MAC and personal paths replaced. Raw captures are excluded."
+  }
+}
