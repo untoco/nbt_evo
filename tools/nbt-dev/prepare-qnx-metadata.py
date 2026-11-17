@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Cache signed Debian indexes; apt verifies their signatures during the build."""
 from concurrent.futures import ThreadPoolExecutor
+import argparse
 import hashlib
 from pathlib import Path
 import tempfile
@@ -21,12 +22,14 @@ def sha256(path):
         return hashlib.file_digest(stream, "sha256").hexdigest()
 
 
-def fetch(url, destination, expected=None):
+def fetch(url, destination, expected=None, offline=False):
     if destination.is_file():
         if expected is None or (destination.stat().st_size == expected[1]
                                 and sha256(destination) == expected[0]):
             destination.chmod(0o644)
             return
+    if offline:
+        raise ValueError("Missing verified Debian index; run tools/nbt-env fetch: " + str(destination))
     destination.parent.mkdir(parents=True, exist_ok=True)
     temporary = None
     try:
@@ -45,12 +48,12 @@ def fetch(url, destination, expected=None):
             temporary.unlink(missing_ok=True)
 
 
-def prepare_suite(suite):
+def prepare_suite(suite, offline=False):
     local, archive, name = suite
     remote = f"https://snapshot.debian.org/archive/{archive}/{SNAPSHOT}/dists/{name}/"
     target = CACHE / local / "dists" / name
     release = target / "InRelease"
-    fetch(remote + "InRelease", release)
+    fetch(remote + "InRelease", release, offline=offline)
     text = release.read_text()
     if not text.startswith("-----BEGIN PGP SIGNED MESSAGE-----"):
         raise ValueError(f"Expected signed InRelease: {release}")
@@ -68,7 +71,7 @@ def prepare_suite(suite):
         path = f"main/binary-{arch}/Packages.xz"
         expected = checksums[path]
         destination = target / path
-        fetch(remote + path, destination, expected)
+        fetch(remote + path, destination, expected, offline=offline)
         by_hash = destination.parent / "by-hash/SHA256" / expected[0]
         by_hash.parent.mkdir(parents=True, exist_ok=True)
         if not by_hash.is_symlink():
@@ -77,6 +80,9 @@ def prepare_suite(suite):
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--offline", action="store_true")
+    args = parser.parse_args()
     with ThreadPoolExecutor(max_workers=3) as pool:
-        list(pool.map(prepare_suite, SUITES))
+        list(pool.map(lambda suite: prepare_suite(suite, args.offline), SUITES))
     print("Debian index files verified against InRelease hashes; apt signature check still required.")

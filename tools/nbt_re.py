@@ -14,15 +14,12 @@ import sys
 import time
 import uuid
 
+from nbt_download import download, DEFAULTS as DOWNLOAD_DEFAULTS
+
 ROOT = Path(__file__).resolve().parents[1]
 LOCK = ROOT / "tools/nbt-re/artifacts.lock.json"
 EXAMPLE = ROOT / "config/nbt/re.example.json"
 LOCAL = ROOT / "config/nbt/re.local.json"
-DOWNLOAD_DEFAULTS = {
-    "download_timeout_seconds": 14400,
-    "download_attempts": 5,
-    "download_stall_seconds": 90,
-}
 
 
 def digest(path, algorithm="sha256"):
@@ -75,44 +72,8 @@ def prepare(cfg):
         if path.exists() and digest(path, algorithm) == item[algorithm]:
             print("Verified:", path.name, flush=True)
             continue
-        partial = path.with_suffix(path.suffix + ".part")
-        # A completed wget/curl partial can be verified and promoted without HTTP.
-        if partial.is_file() and digest(partial, algorithm) == item[algorithm]:
-            partial.replace(path)
-            print("Verified completed partial:", path.name, flush=True)
-            continue
-        attempts = cfg.get("download_attempts", DOWNLOAD_DEFAULTS["download_attempts"])
-        last_failure = "not started"
-        for attempt in range(attempts):
-            offset = partial.stat().st_size if partial.exists() else 0
-            print(f"Downloading {path.name}: attempt {attempt + 1}/{attempts}, "
-                  f"resume at {offset} bytes", flush=True)
-            result = subprocess.run([
-                "curl", "--fail", "--location", "--silent", "--show-error",
-                "--connect-timeout", "20", "--max-time",
-                str(cfg.get("download_timeout_seconds", DOWNLOAD_DEFAULTS["download_timeout_seconds"])),
-                "--speed-limit", "1", "--speed-time",
-                str(cfg.get("download_stall_seconds", DOWNLOAD_DEFAULTS["download_stall_seconds"])),
-                "--continue-at", "-", "--output", str(partial), item["url"],
-            ])
-            if partial.is_file() and digest(partial, algorithm) == item[algorithm]:
-                partial.replace(path)
-                break
-            if result.returncode == 0:
-                last_failure = "completed transfer has an incorrect " + algorithm
-                partial.unlink(missing_ok=True)
-            elif result.returncode == 33:
-                # Server refused Range; retry from zero rather than appending a full file.
-                last_failure = "server refused resume (curl exit 33); restarting transfer"
-                partial.unlink(missing_ok=True)
-            else:
-                size = partial.stat().st_size if partial.exists() else 0
-                last_failure = f"incomplete transfer (curl exit {result.returncode}); {size} bytes retained"
-            print(last_failure, flush=True)
-        else:
-            raise ValueError(f"Download failed: {path.name}: {last_failure}. "
-                             "Rerun prepare to resume retained data.")
-        print("Verified:", path.name, flush=True)
+        download(item["url"], path, item[algorithm], algorithm=algorithm,
+                 settings=cfg, progress=cfg.get("download_progress", True))
 
 
 def run_container(cfg, command, target=None, label="report", stream=False):
@@ -215,7 +176,11 @@ def main():
         return 0
     if args.command == "build":
         verify(cfg)
-        cmd = ["docker", "build", "--platform", cfg["platform"], "-f", str(ROOT / "tools/nbt-re/Dockerfile")]
+        cmd = ["docker", "build", "--network", "none", "--platform", cfg["platform"],
+               "--build-context", "re-apt=" + str(ROOT / ".build/downloads/re/apt"),
+               "--build-context", "re-npm=" + str(ROOT / ".build/downloads/re/npm"),
+               "--build-context", "recipes=" + str(ROOT / "tools/nbt-re"),
+               "-f", str(ROOT / "tools/nbt-re/Dockerfile")]
         if "base_image" in cfg:
             cmd += ["--build-arg", "BASE=" + cfg["base_image"]]
         return subprocess.call(cmd + ["-t", cfg["image"], str(cfg["data"] / "artifacts")])

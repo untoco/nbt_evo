@@ -4,11 +4,12 @@ repo_dir="$(cd "$(dirname "$0")/.." && pwd)"
 action="${1:-help}"
 if [ "$#" -gt 0 ]; then shift; fi
 case "$action" in
+    fetch) exec python3 "$repo_dir/tools/nbt_fetch.py" fetch "$@" ;;
     setup) ;;
     check) set -- --tags verify "$@" ;;
     plan) set -- --list-tasks "$@" ;;
     help|--help|-h)
-        printf 'Usage: tools/nbt-env {setup|check|plan} [ansible-playbook options]\n'
+        printf 'Usage: tools/nbt-env {fetch|setup|check|plan} [ansible-playbook options]\n'
         exit 0 ;;
     *) printf 'Unknown action: %s\n' "$action" >&2; exit 2 ;;
 esac

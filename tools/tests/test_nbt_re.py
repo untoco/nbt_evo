@@ -4,8 +4,11 @@ import json
 from pathlib import Path
 import subprocess
 import tempfile
+import sys
 import unittest
 from unittest.mock import patch
+
+sys.path.insert(0, str(Path(__file__).parents[1]))
 
 SPEC = importlib.util.spec_from_file_location("nbt_re", Path(__file__).parents[1] / "nbt_re.py")
 RE = importlib.util.module_from_spec(SPEC)
@@ -98,6 +101,7 @@ class ArtifactDownloads(unittest.TestCase):
             def run(cmd):
                 calls.append(cmd)
                 self.assertEqual(cmd[cmd.index('--max-time') + 1], '7200')
+                self.assertNotIn('--silent', cmd)
                 self.assertEqual(cmd[cmd.index('--continue-at') + 1], '-')
                 if len(calls) == 1:
                     self.assertEqual(partial.read_bytes(), data[:4])

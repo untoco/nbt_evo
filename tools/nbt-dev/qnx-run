@@ -24,9 +24,9 @@ if [ "$command" = build ]; then
     }
     if [ "$platform" = linux/arm64 ]; then
         python3 "$script_dir/qnx-deps.py" check
-        python3 "$script_dir/prepare-qnx-metadata.py"
+        python3 "$script_dir/prepare-qnx-metadata.py" --offline
     fi
-    python3 "$script_dir/prepare-qnx-build.py" --platform "$platform"
+    python3 "$script_dir/prepare-qnx-build.py" --offline --platform "$platform"
     exec docker build --platform "$platform" --network "${NBT_QNX_BUILD_NETWORK:-none}" --target base-env \
         --build-arg BASE=base-8.5 --file "$repo_dir/.build/nbt-qnx/generated/Dockerfile" \
         --build-context "qnx-sources=$repo_dir/.build/nbt-qnx/sources" \

@@ -16,7 +16,7 @@
       ansible.builtin.import_tasks: tasks/preflight.yml
       tags: [always]
 
-    - name: Download dependencies and build images
+    - name: Verify downloaded resources and build images
       ansible.builtin.include_tasks:
         file: tasks/prepare.yml
         apply:

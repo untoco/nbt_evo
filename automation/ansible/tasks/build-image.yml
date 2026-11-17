@@ -8,17 +8,6 @@
   changed_when: true
   when: image_result.item.component == 'dev'
 
-- name: Cache pinned QNX base image
-  ansible.builtin.command:
-    argv:
-      - docker
-      - pull
-      - --platform
-      - linux/arm64
-      - "{{ (lookup('ansible.builtin.file', repo_root ~ '/tools/nbt-dev/dependencies-arm64.json') | from_json).base_image }}"
-  changed_when: false
-  when: image_result.item.component == 'qnx'
-
 - name: Build QNX compiler image
   ansible.builtin.command:
     argv: [tools/nbt-dev/qnx-run, build]

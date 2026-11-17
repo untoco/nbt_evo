@@ -13,3 +13,5 @@
 - Commit and push completed scoped work to main using existing GitHub authentication. Do not include unrelated changes. This repository is public: inspect staged changes before pushing.
 
 - Environment deployment is user-run: prepare the Ansible playbooks, perform static checks and isolated tests, then provide commands and expected results. Do not run setup/check playbooks, download dependencies, build images, install software or restart Docker/Colima on the user's behalf unless explicitly asked to execute them.
+
+- Dependency acquisition is a separate user-run `tools/nbt-env fetch` stage with visible progress, resume and verification. Ansible setup consumes its verified local inventory; do not reintroduce hidden downloads in playbook commands or Docker RUN steps.

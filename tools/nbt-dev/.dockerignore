@@ -1,3 +1,5 @@
 *
 !Dockerfile
 !doctor.sh
+!apt-packages.txt
+!python-requirements.txt

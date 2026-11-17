@@ -1,0 +1,10 @@
+python3
+procps
+file
+binutils
+unzip
+make
+g++
+zlib1g-dev
+xz-utils
+ca-certificates

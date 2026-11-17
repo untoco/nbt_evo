@@ -1,72 +1,10 @@
 ---
-- name: Prepare online dependencies
+- name: Verify predownloaded resources without network access
+  ansible.builtin.command:
+    argv: "{{ [nbt_python, 'tools/nbt_fetch.py', 'check', '--components'] + nbt_components }}"
+    chdir: "{{ repo_root }}"
+  changed_when: false
   when: not nbt_offline
-  block:
-    - name: Inspect local QNX source tree
-      ansible.builtin.stat:
-        path: "{{ qnx_root }}/Dockerfile"
-      register: qnx_recipe
-      when: "'qnx' in nbt_components"
-
-    - name: Download pinned QNX toolchain source tree
-      ansible.builtin.git:
-        repo: "{{ qnx_lock.repository }}"
-        version: "{{ qnx_lock.commit }}"
-        dest: "{{ qnx_root }}"
-        update: false
-        recursive: false
-      when:
-        - "'qnx' in nbt_components"
-        - not qnx_recipe.stat.exists
-
-    - name: Inspect required QNX files
-      ansible.builtin.stat:
-        path: "{{ qnx_root }}/{{ item.path }}"
-        checksum_algorithm: sha256
-      loop: "{{ qnx_lock.files }}"
-      loop_control:
-        label: "{{ item.path }}"
-      register: qnx_files
-      when: "'qnx' in nbt_components"
-
-    - name: Verify pinned QNX inputs
-      ansible.builtin.assert:
-        that:
-          - item.stat.exists
-          - item.stat.checksum | default('missing') == item.item.sha256
-        fail_msg: "QNX input differs from the pinned recipe: {{ item.item.path }}. Existing files are not overwritten."
-      loop: "{{ qnx_files.results }}"
-      loop_control:
-        label: "{{ item.item.path }}"
-      when: "'qnx' in nbt_components"
-
-    - name: Download and verify Debian packages
-      ansible.builtin.command:
-        argv: ["{{ nbt_python }}", tools/nbt-dev/qnx-deps.py, download]
-        chdir: "{{ repo_root }}"
-      changed_when: false
-      when: "'qnx' in nbt_components"
-
-    - name: Download signed Debian metadata
-      ansible.builtin.command:
-        argv: ["{{ nbt_python }}", tools/nbt-dev/prepare-qnx-metadata.py]
-        chdir: "{{ repo_root }}"
-      changed_when: false
-      when: "'qnx' in nbt_components"
-
-    - name: Download GNU sources and generate QNX recipe
-      ansible.builtin.command:
-        argv: ["{{ nbt_python }}", tools/nbt-dev/prepare-qnx-build.py, --platform, linux/arm64]
-        chdir: "{{ repo_root }}"
-      changed_when: false
-      when: "'qnx' in nbt_components"
-
-    - name: Download and verify Ghidra Node and REA
-      ansible.builtin.command:
-        argv: ["{{ nbt_python }}", tools/nbt_re.py, prepare]
-        chdir: "{{ repo_root }}"
-      changed_when: false
-      when: "'re' in nbt_components"
 
 - name: Build requested images when missing or explicitly rebuilding
   ansible.builtin.include_tasks: build-image.yml

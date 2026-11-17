@@ -1,15 +1,21 @@
 ARG BASE=eclipse-temurin:25-jdk-noble@sha256:80f67fb3d6f76e2d817d98a4cc2a9cf05f054d4e6adc5e2144bde671d722e63f
 FROM ${BASE} AS dependencies
 ENV DEBIAN_FRONTEND=noninteractive
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    python3 procps file binutils unzip make g++ zlib1g-dev xz-utils ca-certificates \
-    && rm -rf /var/lib/apt/lists/*
+COPY --from=recipes apt-packages.txt /tmp/apt-packages.txt
+RUN --mount=type=bind,from=re-apt,target=/downloaded,ro \
+    rm -f /etc/apt/apt.conf.d/docker-clean \
+    && cp -a /downloaded/lists/. /var/lib/apt/lists/ \
+    && cp /downloaded/archives/*.deb /var/cache/apt/archives/ \
+    && xargs -r apt-get install -y --no-download --no-install-recommends < /tmp/apt-packages.txt \
+    && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*.deb
 COPY node-v24.22.3-linux-arm64.tar.xz /tmp/node.tar.xz
 RUN tar -xJf /tmp/node.tar.xz -C /usr/local --strip-components=1 && rm /tmp/node.tar.xz
 COPY rea-agents-6.9.0.tgz /tmp/rea.tgz
-RUN mkdir /opt/rea && cd /opt/rea && npm install --omit=dev --ignore-scripts \
-    --no-audit --no-fund /tmp/rea.tgz && rm /tmp/rea.tgz \
-    && npm cache clean --force
+RUN --mount=type=bind,from=re-npm,target=/downloaded-npm,ro \
+    cp -a /downloaded-npm /tmp/npm-cache \
+    && mkdir /opt/rea && cd /opt/rea && npm install --offline --cache /tmp/npm-cache \
+    --omit=dev --ignore-scripts --no-audit --no-fund /tmp/rea.tgz \
+    && rm -rf /tmp/rea.tgz /tmp/npm-cache
 FROM dependencies
 COPY ghidra_12.2_PUBLIC_20261016.zip /tmp/ghidra.zip
 RUN unzip -q /tmp/ghidra.zip -d /opt && mv /opt/ghidra_12.2_PUBLIC /opt/ghidra \

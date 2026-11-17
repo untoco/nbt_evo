@@ -8,7 +8,10 @@ command="${1:-shell}"
 if [ "$#" -gt 0 ]; then shift; fi
 
 if [ "$command" = build ]; then
-    exec docker build --platform linux/amd64 -t "$image" "$script_dir"
+    exec docker build --network none --platform linux/amd64 \
+        --build-context "dev-apt=$repo_dir/.build/downloads/dev/apt" \
+        --build-context "dev-wheels=$repo_dir/.build/downloads/dev/wheels" \
+        -t "$image" "$script_dir"
 fi
 
 mounts=(--mount "type=bind,src=$repo_dir,dst=/work")
