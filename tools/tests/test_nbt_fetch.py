@@ -14,6 +14,27 @@ from nbt_download import digest
 
 
 class DownloadBoundary(unittest.TestCase):
+    def test_fetch_qnx_invokes_preparation_with_only_supported_arguments(self):
+        from types import SimpleNamespace
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            manifest = root / 'packages.json'
+            manifest.write_text('{"packages": []}')
+            deps = SimpleNamespace(MANIFEST=manifest, CACHE=root / 'debs',
+                                   normalize=lambda packages: [])
+            sources = SimpleNamespace(SOURCES=[], CACHE=root / 'sources')
+            metadata = SimpleNamespace(SUITES=[], CACHE=root / 'metadata')
+            with patch.object(FETCH, 'fetch_qnx_tree', return_value=root / 'tree'), \
+                 patch.object(FETCH, 'load_helper', side_effect=[deps, sources, metadata]), \
+                 patch.object(FETCH, 'qnx_compiler_inputs', return_value=[]), \
+                 patch.object(FETCH, 'download') as download, \
+                 patch.object(FETCH, 'run') as run:
+                FETCH.fetch_qnx({})
+            run.assert_called_once_with([
+                sys.executable, 'tools/nbt-dev/prepare-qnx-build.py',
+                '--offline', '--platform', 'linux/arm64'])
+            download.assert_not_called()
+
     def test_qnx_helpers_load_in_fresh_process_without_sibling_search_path(self):
         script = """
 import sys

@@ -186,7 +186,7 @@ def fetch_qnx(settings):
             sha, size = checksums[name]
             download(remote + name, target / name, sha, size=size, settings=settings)
         metadata.prepare_suite((local, archive, suite), offline=True)
-    run([sys.executable, 'tools/nbt-dev/prepare-qnx-build.py', 'tools/nbt-dev/qnx_inputs.py', '--offline', '--platform', 'linux/arm64'])
+    run([sys.executable, 'tools/nbt-dev/prepare-qnx-build.py', '--offline', '--platform', 'linux/arm64'])
     return qnx_compiler_inputs(tree) + [deps.CACHE, gnu.CACHE, metadata.CACHE]
 
 
