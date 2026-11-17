@@ -1,0 +1,29 @@
+{
+  "python": "cp310",
+  "platform": "linux/amd64",
+  "metadata_sources": [
+    "https://pypi.org/pypi/Pillow/11.3.0/json",
+    "https://pypi.org/pypi/pyelftools/0.32/json",
+    "https://pypi.org/pypi/capstone/5.0.6/json"
+  ],
+  "wheels": [
+    {
+      "file": "pillow-11.3.0-cp310-cp310-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+      "url": "https://files.pythonhosted.org/packages/f0/16/1a6bf01fb622fb9cf5c91683823f073f053005c849b1f52ed613afcf8dae/pillow-11.3.0-cp310-cp310-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl",
+      "sha256": "4445fa62e15936a028672fd48c4c11a66d641d2c05726c7ec1f8ba6a572036ae",
+      "size": 6631840
+    },
+    {
+      "file": "pyelftools-0.32-py3-none-any.whl",
+      "url": "https://files.pythonhosted.org/packages/af/43/700932c4f0638c3421177144a2e86448c0d75dbaee2c7936bda3f9fd0878/pyelftools-0.32-py3-none-any.whl",
+      "sha256": "013df952a006db5e138b1edf6d8a68ecc50630adbd0d83a2d41e7f846163d738",
+      "size": 188525
+    },
+    {
+      "file": "capstone-5.0.6-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+      "url": "https://files.pythonhosted.org/packages/78/7f/ec0687bbe8f6b128f1d41d90ec7cedfd1aaaa4ecb1ae8d334acc7dad8013/capstone-5.0.6-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+      "sha256": "0358855773100bb91ae6681fabce7299df83156945ba943f6211061a592c54a6",
+      "size": 1481605
+    }
+  ]
+}

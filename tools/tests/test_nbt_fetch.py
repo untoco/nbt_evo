@@ -14,6 +14,58 @@ from nbt_download import digest
 
 
 class DownloadBoundary(unittest.TestCase):
+    def test_wheel_lock_matches_hashed_requirements(self):
+        lock = FETCH.read_json(FETCH.ROOT / 'tools/nbt-dev/python-wheels.lock.json')
+        requirements = (FETCH.ROOT / 'tools/nbt-dev/python-requirements.txt').read_text()
+        self.assertEqual(len(lock['wheels']), 3)
+        for item in lock['wheels']:
+            self.assertIn('--hash=sha256:' + item['sha256'], requirements)
+            self.assertTrue(item['url'].startswith('https://files.pythonhosted.org/'))
+            self.assertEqual(item['url'].rsplit('/', 1)[1], item['file'])
+            self.assertGreater(item['size'], 0)
+
+    def test_wheel_transfer_resumes_and_checks_size_and_hash(self):
+        with tempfile.TemporaryDirectory() as directory:
+            cache = Path(directory)
+            payload = b'complete wheel payload'
+            source = cache / 'source'
+            source.write_bytes(payload)
+            filename = 'fixture.whl'
+            lock = {'python': 'cp310', 'platform': 'linux/amd64', 'wheels': [{
+                'file': filename, 'url': 'https://example.invalid/fixture.whl',
+                'sha256': digest(source), 'size': len(payload)}]}
+            partial = cache / 'dev/wheels/fixture.whl.part'
+            partial.parent.mkdir(parents=True)
+            partial.write_bytes(payload[:4])
+            def transfer(command, **kwargs):
+                self.assertIn('--continue-at', command)
+                self.assertEqual(partial.read_bytes(), payload[:4])
+                partial.write_bytes(payload)
+                return subprocess.CompletedProcess(command, 0)
+            with patch.object(FETCH, 'CACHE', cache), patch.object(FETCH, 'read_json', return_value=lock), \
+                 patch('nbt_download.subprocess.run', side_effect=transfer) as request:
+                FETCH.fetch_wheels({'download_attempts': 1})
+                FETCH.fetch_wheels({'download_attempts': 1})
+            self.assertEqual(request.call_count, 1)
+            self.assertEqual((partial.parent / filename).read_bytes(), payload)
+            self.assertFalse(partial.exists())
+
+    def test_corrupt_wheel_is_not_accepted_or_certified(self):
+        with tempfile.TemporaryDirectory() as directory:
+            cache = Path(directory)
+            lock = {'python': 'cp310', 'platform': 'linux/amd64', 'wheels': [{
+                'file': 'fixture.whl', 'url': 'https://example.invalid/fixture.whl',
+                'sha256': '0' * 64, 'size': 7}]}
+            def transfer(command, **kwargs):
+                Path(command[command.index('--output') + 1]).write_bytes(b'corrupt')
+                return subprocess.CompletedProcess(command, 0)
+            with patch.object(FETCH, 'CACHE', cache), patch.object(FETCH, 'read_json', return_value=lock), \
+                 patch('nbt_download.subprocess.run', side_effect=transfer):
+                with self.assertRaisesRegex(ValueError, 'incorrect sha256 or size'):
+                    FETCH.fetch_wheels({'download_attempts': 1})
+            self.assertFalse((cache / 'dev/wheels/fixture.whl').exists())
+            self.assertFalse((cache / 'ready.json').exists())
+
     def test_platform_specific_manifest_is_selected_from_image_index(self):
         def inspect(command, **kwargs):
             # This Docker store returns empty platform fields for an OCI index.

@@ -14,9 +14,6 @@ fi
 # All host OS packages are already in the mounted cache. No apt download here.
 xargs -r apt-get install -y --no-download --no-install-recommends < /recipes/apt-packages.txt
 case "$mode" in
-    wheels)
-        python3 -m pip download --only-binary=:all: --progress-bar on \
-            --dest /cache/wheels -r /recipes/python-requirements.txt ;;
     npm)
         tar -xJf /artifacts/node-v24.22.3-linux-arm64.tar.xz -C /usr/local --strip-components=1
         mkdir -p /tmp/rea-prefetch

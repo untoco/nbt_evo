@@ -62,7 +62,8 @@ def bases(cfg):
 def fingerprints():
     paths = ['tools/nbt_fetch.py', 'tools/nbt_download.py', 'tools/nbt-prefetch.sh',
              'tools/nbt-dev/Dockerfile', 'tools/nbt-dev/apt-packages.txt',
-             'tools/nbt-dev/python-requirements.txt', 'tools/nbt-dev/toolchain.lock.json',
+             'tools/nbt-dev/python-requirements.txt', 'tools/nbt-dev/python-wheels.lock.json',
+             'tools/nbt-dev/toolchain.lock.json',
              'tools/nbt-dev/dependencies-arm64.json', 'tools/nbt-dev/prepare-qnx-build.py',
              'tools/nbt-dev/prepare-qnx-metadata.py', 'tools/nbt-re/Dockerfile',
              'tools/nbt-re/apt-packages.txt', 'tools/nbt-re/artifacts.lock.json']
@@ -211,6 +212,16 @@ def docker_dependency_step(component, reference, architecture, mode, artifacts=N
         subprocess.run(['docker', 'rm', '-f', name], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
 
+def fetch_wheels(settings):
+    """Fetch the pinned CPython 3.10 Linux AMD64 wheels on the host, resumably."""
+    lock = read_json(ROOT / 'tools/nbt-dev/python-wheels.lock.json')
+    if lock['python'] != 'cp310' or lock['platform'] != 'linux/amd64':
+        raise ValueError('Wheel lock must match the dev image: CPython 3.10 linux/amd64')
+    for item in lock['wheels']:
+        download(item['url'], CACHE / 'dev/wheels' / item['file'], item['sha256'],
+                 size=item['size'], settings=settings)
+
+
 def fetch(components, cfg):
     image_specs = bases(cfg)
     result = {'utc': dt.datetime.now(dt.timezone.utc).isoformat(), 'components': {}}
@@ -234,9 +245,10 @@ def fetch(components, cfg):
                              algorithm=algorithm, settings=cfg)
                 paths.append(cfg['data'] / 'artifacts')
             docker_dependency_step(component, reference, architecture, 'apt')
-            docker_dependency_step(component, reference, architecture,
-                                   'wheels' if component == 'dev' else 'npm',
-                                   cfg['data'] / 'artifacts' if component == 're' else None)
+            if component == 'dev':
+                fetch_wheels(cfg)
+            else:
+                docker_dependency_step(component, reference, architecture, 'npm', cfg['data'] / 'artifacts')
             paths.append(CACHE / component)
         result['components'][component] = {'base': reference, 'files': snapshot(paths)}
     result['fingerprints'] = fingerprints()
