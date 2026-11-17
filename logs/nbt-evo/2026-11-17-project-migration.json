@@ -19,5 +19,14 @@
   "public_export": {
     "anonymized": true,
     "raw_data": "local ignored directories only"
+  },
+  "source_cleanup": {
+    "date": "2026-11-17",
+    "tracked_files_removed": 69,
+    "local_files_and_symlinks_verified": 15688,
+    "originals_verified_after_removal": true,
+    "source_commit": "c711d89",
+    "source_references": "updated to nbt_evo",
+    "local_dependencies": "removed from clubsport; retained here outside Git"
   }
 }
