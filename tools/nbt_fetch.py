@@ -166,10 +166,12 @@ def fetch_qnx(settings):
         else:
             raise last
     metadata = load_helper('qnx_metadata', 'tools/nbt-dev/prepare-qnx-metadata.py')
+    metadata_paths = []
     for local, archive, suite in metadata.SUITES:
         remote = f'https://snapshot.debian.org/archive/{archive}/{metadata.SNAPSHOT}/dists/{suite}/'
         target = metadata.CACHE / local / 'dists' / suite
         release = target / 'InRelease'
+        metadata_paths.append(release)
         download(remote + 'InRelease', release, settings=settings)
         checksums = {}
         inside = False
@@ -185,9 +187,13 @@ def fetch_qnx(settings):
             name = f'main/binary-{arch}/Packages.xz'
             sha, size = checksums[name]
             download(remote + name, target / name, sha, size=size, settings=settings)
+            metadata_paths.append(target / name)
         metadata.prepare_suite((local, archive, suite), offline=True)
     run([sys.executable, 'tools/nbt-dev/prepare-qnx-build.py', '--offline', '--platform', 'linux/arm64'])
-    return qnx_compiler_inputs(tree) + [deps.CACHE, gnu.CACHE, metadata.CACHE]
+    return (qnx_compiler_inputs(tree)
+            + [deps.CACHE / item['filename'] for item in packages]
+            + [gnu.CACHE / name for _, name, _ in gnu.SOURCES]
+            + metadata_paths)
 
 
 def docker_dependency_step(component, reference, architecture, mode, artifacts=None):

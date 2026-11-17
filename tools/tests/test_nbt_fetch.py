@@ -19,8 +19,14 @@ class DownloadBoundary(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             manifest = root / 'packages.json'
-            manifest.write_text('{"packages": []}')
-            deps = SimpleNamespace(MANIFEST=manifest, CACHE=root / 'debs',
+            cache = root / 'debs'
+            cache.mkdir()
+            package = cache / 'libcc1-0_10.2.1-6_arm64.deb'
+            package.write_bytes(b'verified package')
+            duplicate = cache / 'libcc1-0_10.2.1-6_arm64 2.deb'
+            duplicate.write_bytes(b'unneeded placeholder')
+            manifest.write_text(json.dumps({'packages': [{'filename': package.name}]}))
+            deps = SimpleNamespace(MANIFEST=manifest, CACHE=cache,
                                    normalize=lambda packages: [])
             sources = SimpleNamespace(SOURCES=[], CACHE=root / 'sources')
             metadata = SimpleNamespace(SUITES=[], CACHE=root / 'metadata')
@@ -29,7 +35,13 @@ class DownloadBoundary(unittest.TestCase):
                  patch.object(FETCH, 'qnx_compiler_inputs', return_value=[]), \
                  patch.object(FETCH, 'download') as download, \
                  patch.object(FETCH, 'run') as run:
-                FETCH.fetch_qnx({})
+                paths = FETCH.fetch_qnx({})
+            self.assertEqual(paths, [package])
+            with patch.object(FETCH, 'ROOT', root), \
+                 patch.object(FETCH, 'digest', side_effect=lambda path: self.assertEqual(path, package) or digest(path)):
+                inventory = FETCH.snapshot(paths)
+            self.assertEqual(inventory, {'debs/' + package.name: digest(package)})
+            self.assertTrue(duplicate.exists())
             run.assert_called_once_with([
                 sys.executable, 'tools/nbt-dev/prepare-qnx-build.py',
                 '--offline', '--platform', 'linux/arm64'])
