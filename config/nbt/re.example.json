@@ -8,5 +8,8 @@
   "decompile_timeout_seconds": 120,
   "java_heap": "1536M",
   "cpus": 2,
-  "memory": "3g"
+  "memory": "3g",
+  "download_timeout_seconds": 14400,
+  "download_attempts": 5,
+  "download_stall_seconds": 90
 }

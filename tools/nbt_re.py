@@ -18,6 +18,11 @@ ROOT = Path(__file__).resolve().parents[1]
 LOCK = ROOT / "tools/nbt-re/artifacts.lock.json"
 EXAMPLE = ROOT / "config/nbt/re.example.json"
 LOCAL = ROOT / "config/nbt/re.local.json"
+DOWNLOAD_DEFAULTS = {
+    "download_timeout_seconds": 14400,
+    "download_attempts": 5,
+    "download_stall_seconds": 90,
+}
 
 
 def digest(path, algorithm="sha256"):
@@ -37,6 +42,11 @@ def config(path):
             raise ValueError("Invalid configuration: " + key)
     if not re.fullmatch(r"[0-9]+[MG]", cfg["java_heap"]):
         raise ValueError("Invalid java_heap")
+    for key, default in DOWNLOAD_DEFAULTS.items():
+        value = cfg.setdefault(key, default)
+        maximum = 20 if key == "download_attempts" else (600 if key == "download_stall_seconds" else 86400)
+        if type(value) is not int or not 1 <= value <= maximum:
+            raise ValueError("Invalid configuration: " + key)
     data = Path(cfg["data_dir"])
     if not data.is_absolute():
         data = ROOT / data
@@ -66,19 +76,42 @@ def prepare(cfg):
             print("Verified:", path.name, flush=True)
             continue
         partial = path.with_suffix(path.suffix + ".part")
-        for attempt in range(3):
+        # A completed wget/curl partial can be verified and promoted without HTTP.
+        if partial.is_file() and digest(partial, algorithm) == item[algorithm]:
+            partial.replace(path)
+            print("Verified completed partial:", path.name, flush=True)
+            continue
+        attempts = cfg.get("download_attempts", DOWNLOAD_DEFAULTS["download_attempts"])
+        last_failure = "not started"
+        for attempt in range(attempts):
+            offset = partial.stat().st_size if partial.exists() else 0
+            print(f"Downloading {path.name}: attempt {attempt + 1}/{attempts}, "
+                  f"resume at {offset} bytes", flush=True)
             result = subprocess.run([
                 "curl", "--fail", "--location", "--silent", "--show-error",
-                "--connect-timeout", "20", "--max-time", "600", "--continue-at", "-",
-                "--output", str(partial), item["url"],
+                "--connect-timeout", "20", "--max-time",
+                str(cfg.get("download_timeout_seconds", DOWNLOAD_DEFAULTS["download_timeout_seconds"])),
+                "--speed-limit", "1", "--speed-time",
+                str(cfg.get("download_stall_seconds", DOWNLOAD_DEFAULTS["download_stall_seconds"])),
+                "--continue-at", "-", "--output", str(partial), item["url"],
             ])
-            if result.returncode == 0 and digest(partial, algorithm) == item[algorithm]:
+            if partial.is_file() and digest(partial, algorithm) == item[algorithm]:
                 partial.replace(path)
                 break
             if result.returncode == 0:
+                last_failure = "completed transfer has an incorrect " + algorithm
                 partial.unlink(missing_ok=True)
-            if attempt == 2:
-                raise ValueError("Download or hash verification failed: " + path.name)
+            elif result.returncode == 33:
+                # Server refused Range; retry from zero rather than appending a full file.
+                last_failure = "server refused resume (curl exit 33); restarting transfer"
+                partial.unlink(missing_ok=True)
+            else:
+                size = partial.stat().st_size if partial.exists() else 0
+                last_failure = f"incomplete transfer (curl exit {result.returncode}); {size} bytes retained"
+            print(last_failure, flush=True)
+        else:
+            raise ValueError(f"Download failed: {path.name}: {last_failure}. "
+                             "Rerun prepare to resume retained data.")
         print("Verified:", path.name, flush=True)
 
 
