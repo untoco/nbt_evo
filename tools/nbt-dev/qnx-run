@@ -32,7 +32,7 @@ if [ "$command" = build ]; then
         --build-context "qnx-sources=$repo_dir/.build/nbt-qnx/sources" \
         --build-context "qnx-debs=$repo_dir/.build/nbt-qnx/debs-${platform##*/}" \
         --build-context "qnx-apt-mirror=$repo_dir/.build/nbt-qnx/metadata/apt-mirror" \
-        -t "$image" "$repo_dir/tools/qnx"
+        -t "$image" "$repo_dir/.build/nbt-qnx/generated/context"
 fi
 
 options=(--rm --pull never --platform "$platform" --network none

@@ -9,11 +9,53 @@ import unittest
 from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).parents[1]))
+sys.path.insert(0, str(Path(__file__).parents[1] / 'nbt-dev'))
 import nbt_fetch as FETCH
 from nbt_download import digest
 
 
 class DownloadBoundary(unittest.TestCase):
+    def test_qnx_required_dataless_input_fails_before_reading(self):
+        from types import SimpleNamespace
+        helper = FETCH.load_helper('qnx_required_test', 'tools/nbt-dev/qnx_inputs.py')
+        with tempfile.TemporaryDirectory() as directory:
+            tree = Path(directory)
+            source = tree / 'Dockerfile'
+            source.write_text('placeholder')
+            result = subprocess.CompletedProcess([], 0, stdout=b'Dockerfile\0')
+            with patch.object(helper.subprocess, 'run', return_value=result), \
+                 patch.object(Path, 'is_symlink', return_value=False), \
+                 patch.object(Path, 'stat', return_value=SimpleNamespace(st_flags=0x40000000)):
+                with self.assertRaisesRegex(ValueError, 'Required QNX input.*Dockerfile'):
+                    helper.compiler_inputs(tree)
+
+    def test_qnx_inventory_and_context_exclude_untracked_duplicates(self):
+        helper = FETCH.load_helper('qnx_context_test', 'tools/nbt-dev/qnx_inputs.py')
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            tree = root / 'tree'
+            (tree / 'sdp/etc').mkdir(parents=True)
+            original = tree / 'sdp/etc/named.conf'
+            original.write_bytes(b'required')
+            (tree / 'Dockerfile').write_text('FROM base')
+            subprocess.run(['git', 'init', '-q', str(tree)], check=True)
+            subprocess.run(['git', '-C', str(tree), 'add', '.'], check=True)
+            duplicate = tree / 'sdp/etc/named 2.conf'
+            duplicate.write_bytes(b'placeholder')
+            destination = root / 'context'
+            destination.mkdir()
+            (destination / 'stale').write_text('previous context')
+            real_copy = helper.shutil.copy2
+            def guarded_copy(source, target):
+                self.assertNotEqual(source, duplicate)
+                return real_copy(source, target)
+            with patch.object(helper.shutil, 'copy2', side_effect=guarded_copy):
+                helper.prepare_context(tree, destination)
+            self.assertEqual((destination / 'sdp/etc/named.conf').read_bytes(), b'required')
+            self.assertFalse((destination / 'sdp/etc/named 2.conf').exists())
+            self.assertFalse((destination / 'stale').exists())
+            self.assertTrue(duplicate.exists())
+
     def test_debian_cache_does_not_read_unneeded_aliases(self):
         helper = FETCH.load_helper('deps_cache_test', 'tools/nbt-dev/qnx-deps.py')
         with tempfile.TemporaryDirectory() as directory:
@@ -164,6 +206,7 @@ class DownloadBoundary(unittest.TestCase):
                 FETCH.image_info('image', 'amd64')
 
     def test_compiler_inventory_does_not_read_unrelated_go_fixtures(self):
+        helper = FETCH.load_helper('qnx_inventory_test', 'tools/nbt-dev/qnx_inputs.py')
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory).resolve()
             tree = root / 'qnx'
@@ -172,11 +215,14 @@ class DownloadBoundary(unittest.TestCase):
             (tree / 'sdp').mkdir()
             (tree / 'sdp/libc.so').write_bytes(b'required')
             (tree / 'Dockerfile').write_text('FROM base')
+            subprocess.run(['git', 'init', '-q', str(tree)], check=True)
+            subprocess.run(['git', '-C', str(tree), 'add', 'Dockerfile', 'sdp'], check=True)
             def guarded_digest(path):
                 if 'go' in Path(path).parts:
                     raise OSError('Resource deadlock avoided')
                 return digest(path)
-            with patch.object(FETCH, 'ROOT', root), patch.object(FETCH, 'digest', side_effect=guarded_digest):
+            with patch.object(FETCH, 'ROOT', root), patch.object(FETCH, 'digest', side_effect=guarded_digest), \
+                 patch.object(FETCH, 'load_helper', return_value=helper):
                 inventory = FETCH.snapshot(FETCH.qnx_compiler_inputs(tree))
             self.assertIn('qnx/sdp/libc.so', inventory)
             self.assertFalse(any('/go/' in name for name in inventory))

@@ -65,7 +65,7 @@ def fingerprints():
              'tools/nbt-dev/python-requirements.txt', 'tools/nbt-dev/python-wheels.lock.json',
              'tools/nbt-dev/toolchain.lock.json',
              'tools/nbt-dev/dependencies-arm64.json', 'tools/nbt-dev/qnx-deps.py',
-             'tools/nbt-dev/prepare-qnx-build.py',
+             'tools/nbt-dev/prepare-qnx-build.py', 'tools/nbt-dev/qnx_inputs.py',
              'tools/nbt-dev/prepare-qnx-metadata.py', 'tools/nbt-re/Dockerfile',
              'tools/nbt-re/apt-packages.txt', 'tools/nbt-re/artifacts.lock.json']
     return {p: digest(ROOT / p) for p in paths}
@@ -137,8 +137,8 @@ def verify_qnx_tree(directory, lock):
 
 
 def qnx_compiler_inputs(tree):
-    # base-env builds the C/C++ toolchain. Go/Rust test fixtures are not build inputs.
-    return [tree / name for name in ('Dockerfile', 'sdp', 'gcc', 'binutils', 'tools', 'cross', 'entrypoint.sh')]
+    helper = load_helper('qnx_inputs', 'tools/nbt-dev/qnx_inputs.py')
+    return helper.compiler_inputs(tree)
 
 
 def fetch_qnx(settings):
@@ -186,7 +186,7 @@ def fetch_qnx(settings):
             sha, size = checksums[name]
             download(remote + name, target / name, sha, size=size, settings=settings)
         metadata.prepare_suite((local, archive, suite), offline=True)
-    run([sys.executable, 'tools/nbt-dev/prepare-qnx-build.py', '--offline', '--platform', 'linux/arm64'])
+    run([sys.executable, 'tools/nbt-dev/prepare-qnx-build.py', 'tools/nbt-dev/qnx_inputs.py', '--offline', '--platform', 'linux/arm64'])
     return qnx_compiler_inputs(tree) + [deps.CACHE, gnu.CACHE, metadata.CACHE]
 
 
