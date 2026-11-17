@@ -1,0 +1,60 @@
+{
+  "date": "2026-11-17",
+  "utc": "2026-11-17T08:39:06Z",
+  "status": "measured",
+  "executor": "owner",
+  "command": "./tools/nbt-env setup",
+  "components": [
+    "dev",
+    "qnx",
+    "re"
+  ],
+  "recap": {
+    "ok": 34,
+    "changed": 3,
+    "unreachable": 0,
+    "failed": 0,
+    "skipped": 3,
+    "rescued": 0,
+    "ignored": 0
+  },
+  "images": [
+    {
+      "component": "dev",
+      "id": "sha256:1ef20a990c7d05a43f5c8b19c299d79d82d036f10ed34f7b4ba0e4d1f3bf3a8c",
+      "architecture": "amd64",
+      "os": "linux"
+    },
+    {
+      "component": "qnx",
+      "id": "sha256:bfd42a640116ecb8cf0f9786cec90ab9baf43efedcf31a6f588f0424525ff7c4",
+      "architecture": "arm64",
+      "os": "linux"
+    },
+    {
+      "component": "re",
+      "id": "sha256:753743e07544e535e625ad8bdf15ea29d5b29d4e29b953946f72e448afa6909f",
+      "architecture": "arm64",
+      "os": "linux"
+    }
+  ],
+  "checked": [
+    "pinned QNX input hashes",
+    "dependency cache preparation and verification",
+    "image architectures and project bind mount",
+    "general development tools",
+    "C and C++98 QNX compilation",
+    "Ghidra provider health",
+    "ARM32 QNX fixture compilation and decompilation",
+    "unchanged analysis input",
+    "MCP configuration generation"
+  ],
+  "existing_images_reused": true,
+  "qnx_checkout_reused": true,
+  "fresh_download_proven": false,
+  "fresh_image_build_proven": false,
+  "vehicle_requests": false,
+  "containers": "ephemeral --rm; no persistent service expected",
+  "log_sha256": "ddd1928a7ae95cbe37759894279070a4ea6f6b7ebcd92dd0711e8c67326e72fc",
+  "source_result_sha256": "6a2beee94fc6caa0ceff7cb5fdef49b3852ad59b9fd5d59c8e54614b1971c43f"
+}
