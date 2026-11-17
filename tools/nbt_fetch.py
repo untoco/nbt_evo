@@ -37,12 +37,17 @@ def read_json(path):
 
 
 def image_info(reference, architecture):
-    result = subprocess.run(['docker', 'image', 'inspect', reference], capture_output=True, text=True)
+    platform = 'linux/' + architecture
+    result = subprocess.run(['docker', 'image', 'inspect', '--platform', platform, reference], capture_output=True, text=True)
     if result.returncode:
-        return None
+        error = result.stderr.strip()
+        if any(marker in error.lower() for marker in ('no such image', 'not found', 'does not provide', 'does not match')):
+            return None
+        raise ValueError(f'Cannot inspect {platform} for {reference}: {error}')
     info = json.loads(result.stdout)[0]
-    if info['Os'] != 'linux' or info['Architecture'] != architecture:
-        raise ValueError('Unexpected image platform: ' + reference)
+    if info.get('Os') != 'linux' or info.get('Architecture') != architecture:
+        observed = f"{info.get('Os') or 'unknown'}/{info.get('Architecture') or 'unknown'}"
+        raise ValueError(f'Unexpected image platform: expected {platform}, got {observed}: {reference}')
     return info
 
 
@@ -129,6 +134,11 @@ def verify_qnx_tree(directory, lock):
             raise ValueError('Pinned QNX input mismatch: ' + item['path'])
 
 
+def qnx_compiler_inputs(tree):
+    # base-env builds the C/C++ toolchain. Go/Rust test fixtures are not build inputs.
+    return [tree / name for name in ('Dockerfile', 'sdp', 'gcc', 'binutils', 'tools', 'cross', 'entrypoint.sh')]
+
+
 def fetch_qnx(settings):
     tree = fetch_qnx_tree()
     deps = load_helper('qnx_deps', 'tools/nbt-dev/qnx-deps.py')
@@ -173,7 +183,7 @@ def fetch_qnx(settings):
             download(remote + name, target / name, sha, size=size, settings=settings)
         metadata.prepare_suite((local, archive, suite), offline=True)
     run([sys.executable, 'tools/nbt-dev/prepare-qnx-build.py', '--offline', '--platform', 'linux/arm64'])
-    return [tree, deps.CACHE, gnu.CACHE, metadata.CACHE]
+    return qnx_compiler_inputs(tree) + [deps.CACHE, gnu.CACHE, metadata.CACHE]
 
 
 def docker_dependency_step(component, reference, architecture, mode, artifacts=None):

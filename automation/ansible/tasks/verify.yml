@@ -1,7 +1,7 @@
 ---
 - name: Inspect prepared image platforms
   ansible.builtin.command:
-    argv: [docker, image, inspect, "{{ item.image }}"]
+    argv: [docker, image, inspect, --platform, "linux/{{ item.arch }}", "{{ item.image }}"]
   loop: "{{ selected_images }}"
   loop_control:
     label: "{{ item.component }}"

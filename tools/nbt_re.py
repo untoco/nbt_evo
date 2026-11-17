@@ -127,7 +127,7 @@ def run_container(cfg, command, target=None, label="report", stream=False):
             "exit_code": code, "timeout": timed_out, "interrupted": interrupted,
             "seconds": round(time.monotonic()-started, 3),
             "network": "none", "input_read_only": bool(target)}
-    info = subprocess.run(["docker", "image", "inspect", cfg["image"], "--format", "{{.Id}}"],
+    info = subprocess.run(["docker", "image", "inspect", "--platform", cfg["platform"], cfg["image"], "--format", "{{.Id}}"],
                           capture_output=True, text=True)
     meta["image_id"] = info.stdout.strip() if info.returncode == 0 else None
     if target:

@@ -1,6 +1,7 @@
 """Acquisition/deployment boundary tests; no downloads, Docker runs or host installs."""
 import importlib.util
 import json
+import subprocess
 from pathlib import Path
 import sys
 import tempfile
@@ -13,6 +14,48 @@ from nbt_download import digest
 
 
 class DownloadBoundary(unittest.TestCase):
+    def test_platform_specific_manifest_is_selected_from_image_index(self):
+        def inspect(command, **kwargs):
+            # This Docker store returns empty platform fields for an OCI index.
+            image = {'Os': '', 'Architecture': ''}
+            if '--platform' in command:
+                self.assertEqual(command[command.index('--platform') + 1], 'linux/amd64')
+                image = {'Os': 'linux', 'Architecture': 'amd64', 'Id': 'sha256:platform-image'}
+            return subprocess.CompletedProcess(command, 0, stdout=json.dumps([image]), stderr='')
+        with patch.object(FETCH.subprocess, 'run', side_effect=inspect):
+            self.assertEqual(FETCH.image_info('image@sha256:index', 'amd64')['Id'], 'sha256:platform-image')
+
+    def test_real_platform_mismatch_is_rejected(self):
+        response = subprocess.CompletedProcess([], 0, stdout=json.dumps([{'Os': 'linux', 'Architecture': 'arm64'}]), stderr='')
+        with patch.object(FETCH.subprocess, 'run', return_value=response):
+            with self.assertRaisesRegex(ValueError, 'expected linux/amd64, got linux/arm64'):
+                FETCH.image_info('image', 'amd64')
+
+    def test_absent_platform_returns_missing_but_daemon_errors_do_not(self):
+        with patch.object(FETCH.subprocess, 'run', return_value=subprocess.CompletedProcess([], 1, stdout='', stderr='No such image')):
+            self.assertIsNone(FETCH.image_info('image', 'amd64'))
+        with patch.object(FETCH.subprocess, 'run', return_value=subprocess.CompletedProcess([], 1, stdout='', stderr='Cannot connect to Docker daemon')):
+            with self.assertRaisesRegex(ValueError, 'Cannot inspect linux/amd64'):
+                FETCH.image_info('image', 'amd64')
+
+    def test_compiler_inventory_does_not_read_unrelated_go_fixtures(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory).resolve()
+            tree = root / 'qnx'
+            (tree / 'go/testdata').mkdir(parents=True)
+            (tree / 'go/testdata/cloud-placeholder.pkg').write_bytes(b'not a compiler input')
+            (tree / 'sdp').mkdir()
+            (tree / 'sdp/libc.so').write_bytes(b'required')
+            (tree / 'Dockerfile').write_text('FROM base')
+            def guarded_digest(path):
+                if 'go' in Path(path).parts:
+                    raise OSError('Resource deadlock avoided')
+                return digest(path)
+            with patch.object(FETCH, 'ROOT', root), patch.object(FETCH, 'digest', side_effect=guarded_digest):
+                inventory = FETCH.snapshot(FETCH.qnx_compiler_inputs(tree))
+            self.assertIn('qnx/sdp/libc.so', inventory)
+            self.assertFalse(any('/go/' in name for name in inventory))
+
     def test_missing_receipt_never_attempts_docker_or_download(self):
         with tempfile.TemporaryDirectory() as d:
             with patch.object(FETCH, 'RECEIPT', Path(d) / 'missing.json'), \
