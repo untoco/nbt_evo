@@ -7,8 +7,6 @@ from pathlib import Path
 import tempfile
 import urllib.request
 
-from qnx_inputs import prepare_context
-
 ROOT = Path(__file__).resolve().parents[2]
 CACHE = ROOT / ".build/nbt-qnx/sources"
 SOURCES = (
@@ -66,6 +64,10 @@ def fetch(source, offline=False):
 
 
 def main():
+    # Only the executable preparation step needs the sibling context helper.
+    # nbt_fetch also loads this module by path to read source constants.
+    from qnx_inputs import prepare_context
+
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--platform", default="linux/arm64", choices=("linux/arm64", "linux/amd64"))
     parser.add_argument("--offline", action="store_true")

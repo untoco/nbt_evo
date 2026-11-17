@@ -9,12 +9,32 @@ import unittest
 from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).parents[1]))
-sys.path.insert(0, str(Path(__file__).parents[1] / 'nbt-dev'))
 import nbt_fetch as FETCH
 from nbt_download import digest
 
 
 class DownloadBoundary(unittest.TestCase):
+    def test_qnx_helpers_load_in_fresh_process_without_sibling_search_path(self):
+        script = """
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(sys.argv[1]) / 'tools'))
+import nbt_fetch
+sources = nbt_fetch.load_helper('qnx_sources', 'tools/nbt-dev/prepare-qnx-build.py')
+assert len(sources.SOURCES) == 2
+inputs = nbt_fetch.load_helper('qnx_inputs', 'tools/nbt-dev/qnx_inputs.py')
+assert callable(inputs.prepare_context)
+assert not any(Path(p).name == 'nbt-dev' for p in sys.path)
+"""
+        with tempfile.TemporaryDirectory() as directory:
+            result = subprocess.run([sys.executable, '-I', '-c', script, str(FETCH.ROOT)],
+                                    cwd=directory, capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            result = subprocess.run([sys.executable, '-E', str(FETCH.ROOT / 'tools/nbt-dev/prepare-qnx-build.py'), '--help'],
+                                    cwd=directory, capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertIn('--offline', result.stdout)
+
     def test_qnx_required_dataless_input_fails_before_reading(self):
         from types import SimpleNamespace
         helper = FETCH.load_helper('qnx_required_test', 'tools/nbt-dev/qnx_inputs.py')
