@@ -149,6 +149,20 @@ def inventory(app):
     return result
 
 
+def clean_bundle_metadata(app):
+    """Remove only codesign-forbidden metadata; preserve quarantine and signatures."""
+    if not app.is_dir() or app.is_symlink():
+        raise ValueError('Expected a real app directory')
+    for path in [app, *sorted(app.rglob('*'))]:
+        if path.is_symlink():
+            continue  # Never follow bundle links to another object.
+        attributes = subprocess.run(['/usr/bin/xattr', '-s', str(path)],
+                                    capture_output=True, text=True, check=True).stdout.splitlines()
+        for attribute in ('com.apple.FinderInfo', 'com.apple.ResourceFork'):
+            if attribute in attributes:
+                subprocess.run(['/usr/bin/xattr', '-d', '-s', attribute, str(path)], check=True)
+
+
 def bundle_info(app):
     with (app / 'Contents/Info.plist').open('rb') as stream:
         info = plistlib.load(stream)
@@ -158,6 +172,7 @@ def bundle_info(app):
     binary = app / 'Contents/MacOS' / executable
     if not binary.is_file() or not binary.stat().st_mode & 0o111:
         raise ValueError('Missing/non-executable bundle binary')
+    clean_bundle_metadata(app)
     subprocess.run(['/usr/bin/codesign', '--verify', '--deep', '--strict', str(app)], check=True)
     architectures = subprocess.run(['/usr/bin/lipo', '-archs', str(binary)],
                                    capture_output=True, text=True, check=True).stdout.strip().split()

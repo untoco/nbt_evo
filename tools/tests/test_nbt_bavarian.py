@@ -57,6 +57,32 @@ class BavarianTool(unittest.TestCase):
              patch.object(BAV, 'download', side_effect=AssertionError('offline preparation')):
             return BAV.prepare()
 
+    def test_metadata_cleanup_preserves_quarantine_and_skips_symlink_targets(self):
+        app = self.root / 'metadata.app'
+        app.mkdir()
+        binary = app / 'binary'
+        binary.write_bytes(b'unchanged')
+        outside = self.root / 'outside'
+        outside.write_bytes(b'outside')
+        (app / 'link').symlink_to(outside)
+        deleted = []
+
+        def run(command, **kwargs):
+            if '-d' in command:
+                deleted.append((command[-2], command[-1]))
+                return subprocess.CompletedProcess(command, 0)
+            self.assertNotEqual(command[-1], str(app / 'link'))
+            return subprocess.CompletedProcess(command, 0, stdout=(
+                'com.apple.FinderInfo\ncom.apple.ResourceFork\n'
+                'com.apple.quarantine\ncom.apple.provenance\n'))
+
+        with patch.object(BAV.subprocess, 'run', side_effect=run):
+            BAV.clean_bundle_metadata(app)
+        self.assertEqual(deleted, [(attribute, str(path)) for path in (app, binary)
+                                  for attribute in ('com.apple.FinderInfo', 'com.apple.ResourceFork')])
+        self.assertEqual(binary.read_bytes(), b'unchanged')
+        self.assertEqual(outside.read_bytes(), b'outside')
+
     def test_prepare_records_observed_bundle_version_without_claiming_changelog_match(self):
         app = self.prepare_fixture()
         receipt = json.loads((app.parent / 'receipt.json').read_text())

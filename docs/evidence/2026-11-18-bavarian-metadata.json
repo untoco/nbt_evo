@@ -1,0 +1,19 @@
+{
+  "date": "2026-11-18",
+  "scope": "Isolated copy of existing local archive; no GUI or vehicle access",
+  "anonymization": "Summary only; owner paths and raw command logs omitted",
+  "archive_sha256": "bbf622cd8a216f461c0a92d7bf9fb2edbe178dba9ae404c95cc8763de5e881f1",
+  "strict_signature_initial": true,
+  "injected_FinderInfo_rejected": true,
+  "strict_signature_after_cleanup": true,
+  "quarantine_preserved": true,
+  "file_inventory_unchanged": true,
+  "observed": {
+    "bundle_version": "0.2.0",
+    "bundle_build": "0.2.0",
+    "architectures": [
+      "arm64"
+    ]
+  },
+  "client_launched": false
+}
