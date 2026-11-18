@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Offline preparation and explicit launch of the pinned macOS Bavarian client."""
+"""Check/update the macOS Bavarian client, then launch it explicitly."""
 from nbt_bavarian import main
 
 if __name__ == '__main__':

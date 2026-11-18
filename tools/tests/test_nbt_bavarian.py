@@ -29,10 +29,13 @@ class BavarianTool(unittest.TestCase):
             package.writestr('bavarian-ssh-client.app/Contents/MacOS/client', b'fixture, never execute')
         self.item = {'file': self.archive.name, 'sha256': digest(self.archive),
                      'bundle': 'bavarian-ssh-client.app', 'reported_release': '0.2.3',
+                     'checked_on': '2026-11-18',
                      'url': 'https://example.invalid/fixture.zip'}
         self.addCleanup(patch.stopall)
         patch.object(BAV, 'ROOT', self.root).start()
-        patch.object(BAV, 'specification', return_value=self.item).start()
+        lock = self.root / 'fixture.lock.json'
+        lock.write_text(json.dumps(self.item))
+        patch.object(BAV, 'LOCK', lock).start()
         patch.object(BAV.platform, 'system', return_value='Darwin').start()
         patch.object(BAV.platform, 'machine', return_value='arm64').start()
         target = BAV.locations(self.item)[1]
@@ -40,6 +43,9 @@ class BavarianTool(unittest.TestCase):
         target.write_bytes(self.archive.read_bytes())
 
     def fake_mac_command(self, command, **kwargs):
+        if command[0] == 'curl':
+            return subprocess.CompletedProcess(command, 0,
+                                               stdout=f'{self.item["sha256"]}  {self.item["file"]}\n')
         if command[0] == '/usr/bin/ditto':
             with zipfile.ZipFile(command[-2]) as package:
                 package.extractall(command[-1])
@@ -156,6 +162,72 @@ class BavarianTool(unittest.TestCase):
             package.writestr('app/link/payload', 'data')
         with self.assertRaisesRegex(ValueError, 'writes through symlink'):
             BAV.validate_zip(archive)
+
+    def test_update_reuses_verified_archive_and_bundle_then_selects_it(self):
+        app = self.prepare_fixture()
+        with patch.object(BAV.subprocess, 'run', side_effect=self.fake_mac_command) as run, \
+             patch.object(BAV, 'download') as download:
+            self.assertEqual(BAV.update(), app)
+        self.assertNotIn('/usr/bin/ditto', [call.args[0][0] for call in run.call_args_list])
+        self.assertIn('curl', [call.args[0][0] for call in run.call_args_list])
+        self.assertEqual(download.call_args.args[2], self.item['sha256'])
+        self.assertEqual(json.loads(BAV.current_file().read_text())['sha256'], self.item['sha256'])
+
+    def test_update_new_release_pins_hash_locally_and_preserves_old_version(self):
+        old_app = self.prepare_fixture()
+        with zipfile.ZipFile(self.archive, 'a') as package:
+            package.writestr('bavarian-ssh-client.app/Contents/new-resource', 'new release')
+        new_sha = digest(self.archive)
+        def run(command, **kwargs):
+            if command[0] == 'curl':
+                return subprocess.CompletedProcess(command, 0, stdout=f'{new_sha} *{self.item["file"]}\n')
+            return self.fake_mac_command(command, **kwargs)
+        def acquire(url, destination, expected):
+            self.assertEqual(expected, new_sha)
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            destination.write_bytes(self.archive.read_bytes())
+        with patch.object(BAV.subprocess, 'run', side_effect=run), \
+             patch.object(BAV, 'download', side_effect=acquire):
+            new_app = BAV.update()
+            self.assertEqual(BAV.check(), new_app)
+        self.assertTrue(old_app.exists())
+        self.assertNotEqual(new_app, old_app)
+        self.assertEqual(BAV.specification()['sha256'], new_sha)
+        self.assertIsNone(BAV.specification()['reported_release'])
+        self.assertEqual(json.loads(BAV.LOCK.read_text())['sha256'], self.item['sha256'])
+
+    def test_failed_update_leaves_selected_version_unchanged(self):
+        self.prepare_fixture()
+        selected = {'sha256': self.item['sha256'], 'checked_on': '2026-11-18'}
+        BAV.current_file().write_text(json.dumps(selected))
+        before = BAV.current_file().read_bytes()
+        with patch.object(BAV.subprocess, 'run', side_effect=self.fake_mac_command), \
+             patch.object(BAV, 'download', side_effect=ValueError('download unavailable')):
+            with self.assertRaisesRegex(ValueError, 'unavailable'):
+                BAV.update()
+        self.assertEqual(BAV.current_file().read_bytes(), before)
+
+    def test_update_repairs_tampered_bundle_and_keeps_evidence(self):
+        app = self.prepare_fixture()
+        (app / 'Contents/MacOS/client').write_bytes(b'tampered')
+        with patch.object(BAV.subprocess, 'run', side_effect=self.fake_mac_command), \
+             patch.object(BAV, 'download'):
+            self.assertEqual(BAV.update(), app)
+        previous = list(app.parent.parent.glob('prepared.previous-*'))
+        self.assertEqual(len(previous), 1)
+        self.assertEqual((previous[0] / self.item['bundle'] / 'Contents/MacOS/client').read_bytes(), b'tampered')
+        self.assertEqual((app / 'Contents/MacOS/client').read_bytes(), b'fixture, never execute')
+
+    def test_missing_or_ambiguous_publisher_checksum_does_not_download(self):
+        for index in ['<html>unavailable</html>', '0' * 64 + ' another.zip',
+                      (self.item['sha256'] + ' ' + self.item['file'] + '\n') * 2]:
+            with self.subTest(index=index), \
+                 patch.object(BAV.subprocess, 'run', return_value=subprocess.CompletedProcess([], 0, stdout=index)), \
+                 patch.object(BAV, 'download') as download:
+                with self.assertRaisesRegex(ValueError, 'exactly one'):
+                    BAV.update()
+                download.assert_not_called()
+        self.assertFalse(BAV.current_file().exists())
 
 
 if __name__ == '__main__':
