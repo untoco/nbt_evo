@@ -1,0 +1,9 @@
+{
+  "source": "https://ssh.bavarian-aa.uk/",
+  "checked_on": "2026-11-18",
+  "reported_release": "0.2.3",
+  "url": "https://ssh.bavarian-aa.uk/downloads/bavarian-ssh-client-macos.zip",
+  "file": "bavarian-ssh-client-macos.zip",
+  "sha256": "bbf622cd8a216f461c0a92d7bf9fb2edbe178dba9ae404c95cc8763de5e881f1",
+  "bundle": "bavarian-ssh-client.app"
+}

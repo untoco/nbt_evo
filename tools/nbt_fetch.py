@@ -14,6 +14,7 @@ import uuid
 
 from nbt_download import digest, download
 import nbt_re as RE
+import nbt_bavarian as BAVARIAN
 
 ROOT = Path(__file__).resolve().parents[1]
 CACHE = ROOT / '.build/downloads'
@@ -278,17 +279,23 @@ def fetch(components, cfg):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('command', choices=('fetch', 'check'))
-    parser.add_argument('--components', nargs='+', choices=('dev', 'qnx', 're'), default=['dev', 'qnx', 're'])
+    parser.add_argument('--components', nargs='+', choices=('dev', 'qnx', 're', 'bavarian'), default=['dev', 'qnx', 're'])
     args = parser.parse_args()
     if sys.version_info < (3, 11):
         raise ValueError('Python 3.11+ required')
-    if ',' in str(ROOT):
+    components = list(dict.fromkeys(args.components))
+    core = [component for component in components if component != 'bavarian']
+    if core and ',' in str(ROOT):
         raise ValueError('Docker bind mounts cannot use a repository path containing commas')
-    cfg = RE.config(RE.LOCAL if RE.LOCAL.exists() else RE.EXAMPLE)
+    cfg = RE.config(RE.LOCAL if RE.LOCAL.exists() else RE.EXAMPLE) if core else {}
     if args.command == 'check':
-        check(args.components, cfg)
+        if core:
+            check(core, cfg)
+        if 'bavarian' in components:
+            BAVARIAN.verify_archive(BAVARIAN.specification())
+            print('Bavarian archive verified. No downloads performed.', flush=True)
         return
-    for tool in ('docker', 'git', 'curl'):
+    for tool in (('docker', 'git', 'curl') if core else ('curl',)):
         if not shutil.which(tool):
             raise ValueError('Missing tool: ' + tool)
     CACHE.mkdir(parents=True, exist_ok=True)
@@ -297,7 +304,10 @@ def main():
             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         except BlockingIOError:
             raise ValueError('Another fetch is running; wait for it to finish') from None
-        fetch(list(dict.fromkeys(args.components)), cfg)
+        if core:
+            fetch(core, cfg)
+        if 'bavarian' in components:
+            BAVARIAN.fetch(cfg)
 
 
 if __name__ == '__main__':

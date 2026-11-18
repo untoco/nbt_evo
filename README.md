@@ -29,6 +29,8 @@ fetch показывает ход загрузок, скорость и ETA ар
 
 Повторная проверка окружения: `./tools/nbt-env check`. Параметры и порядок работы описаны в [инструкции](docs/environment.md#загрузка-ресурсов-и-развёртывание-через-ansible).
 
+Дополнительный macOS-клиент временного SSH — [Bavarian](docs/environment.md#bavarian-временный-ssh-на-macos): загрузка через `./tools/nbt-env fetch --components bavarian`, локальная подготовка и запуск через `./tools/nbt-bavarian`.
+
 Проверка кода из корня проекта:
 
 ```sh
